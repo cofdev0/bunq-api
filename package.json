@@ -1,33 +1,55 @@
 {
+  "jest": {
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
+  },
   "name": "bunq",
   "version": "0.0.1",
-  "description": "A small API wrapper for the bunq api",
+  "description": "A wrapper for part of the Bunq API v1",
   "main": "bunq.js",
   "directories": {
     "test": "test"
   },
   "dependencies": {
-    "request-promise": "^4.1.1",
+    "file-system": "^2.2.2",
+    "node-datetime": "^1.0.0",
+    "node-rsa": "^0.4.2",
+    "randomstring": "^1.1.5",
     "request": "^2.81.0",
-    "randomstring": "^1.1.5"
+    "request-promise": "^4.2.1",
+    "typescript": "^2.3.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/jest": "^19.2.3",
+    "@types/node": "^7.0.18",
+    "babel-jest": "^20.0.0",
+    "jest": "^20.0.0",
+    "ts-jest": "^20.0.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/c0dr/bunq.git"
+    "url": "git+ssh://git@github.com/cofdev0/bunq.git"
   },
   "keywords": [
     "bunq",
     "api",
     "bank"
   ],
-  "author": "Simon Schraeder",
+  "author": "cofdev0",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/c0dr/bunq/issues"
+    "url": "https://github.com/cofdev0/bunq"
   },
-  "homepage": "https://github.com/c0dr/bunq#readme"
+  "homepage": "https://github.com/cofdev0/bunq"
 }
