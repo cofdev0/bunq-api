@@ -1,5 +1,5 @@
 const rp = require('request-promise');
-const randomstring = require('randomstring');
+const randomstring = require("randomstring");
 const NodeRSA = require('node-rsa');
 
 
@@ -7,44 +7,16 @@ const NodeRSA = require('node-rsa');
 const BUNQ_API_SERVICE_URL = 'https://api.bunq.com';
 const BUNQ_API_VERSION = 'v1';
 
-class Bunq {
+export class BunqApi {
 
-    constructor(installationToken, apiKey, privateKey) {
+    constructor(apiKey:string, privateKey:string, installationToken:string) {
         this.installationToken = installationToken;
         this.apiKey = apiKey;
         this.privateKey = privateKey;
     }
 
-    getDefaultOptions() {
-        return {
-            uri: BUNQ_API_SERVICE_URL,
-            headers: {
-                'Cache-Control': 'no-cache',
-                'User-Agent': 'bunq-TestSerdver/1.00 sandbox/0.17b',
-                'X-Bunq-Language': 'en_US',
-                'X-Bunq-Region': 'en_US',
-                'X-Bunq-Client-Request-Id': 'generate RandomSource',
-                'X-Bunq-Geolocation': '0 0 0 00 NL',
-                'X-Bunq-Client-Request-Id': randomstring.generate(7),
-                'X-Bunq-Client-Authentication': this.sessionToken,
-            }
-        };
-    }
-    generateRequest(method, url, body) {
-        let options = this.getDefaultOptions();
-        options.uri = "/" + BUNQ_API_VERSION + url;
 
-        if (body && method != "GET") {
-            options.body = JSON.stringify(body);
-        }
-        options.method = method;
-        options.headers['X-Bunq-Client-Signature'] = this.signApiCall(options);
-        options.uri = BUNQ_API_SERVICE_URL + options.uri;
-
-        return rp(options);
-    }
-
-    postDeviceServer(description, permittedIps) {
+    postDeviceServer(description:string, permittedIps:string[]):any {
         return this.generateRequest("POST", "/device-server", {
             secret: this.apiKey,
             description: description,
@@ -52,32 +24,33 @@ class Bunq {
         });
     }
 
-    getDeviceServers() {
-        return this.generateRequest("GET", "/device-server");
+    getDeviceServers():any {
+        return this.generateRequest("GET", "/device-server",{});
     }
 
-    postSessionServer() {
+    postSessionServer():any {
         return this.generateRequest("POST", "/session-server", {
             secret: this.apiKey
         });
     }
 
-    getUser(userId) {
+    getUser(userId:string=undefined):any {
         const urlWithParameter = userId ? `/user/${userId}` : "/user";
-        return this.generateRequest("GET", urlWithParameter);
+        return this.generateRequest("GET", urlWithParameter,{});
     }
 
-    getMonetaryAccount(userId, accountId) {
+    getMonetaryAccount(userId:string, accountId:string=undefined):any {
         const urlWithParameter = accountId ? `/user/${userId}/monetary-account/${accountId}` : `/user/${userId}/monetary-account`;
-        return this.generateRequest("GET", urlWithParameter);
+        return this.generateRequest("GET", urlWithParameter,{});
     }
 
-    getTransactions(userId, accountId) {
+    getTransactions(userId:string, accountId:string):any {
         const urlWithParameter = `/user/${userId}/monetary-account/${accountId}/payment`;
-        return this.generateRequest("GET", urlWithParameter);
+        return this.generateRequest("GET", urlWithParameter,{});
     }
 
-    sendPayment(userId, accountId, value, iban, name, description) {
+    sendPayment(userId:string, accountId:string, value:string,
+                iban:string, name:string, description:string):any {
         const urlWithParameter = `/user/${userId}/monetary-account/${accountId}/payment`;
         return this.generateRequest("POST",urlWithParameter, {
             "amount": {
@@ -93,24 +66,53 @@ class Bunq {
         });
     }
 
-    initSession() {
+    initSession():Promise<any> {
         // to create a session we need to provide the installation token, afterwards the session token
         this.sessionToken = this.installationToken;
         return new Promise((resolve, reject) => {
-            this.postSessionServer().then((response) => {
+            this.postSessionServer().then((response:any) => {
                 this.sessionToken = JSON.parse(response).Response[1]["Token"]["token"]
                 resolve();
-            }).catch((error) => {
+            }).catch((error:any) => {
                 reject(error);
             })
-        });
+        })
     }
 
-    setSessionToken(sessionToken) {
+    setSessionToken(sessionToken:string) {
         this.sessionToken = sessionToken;
     }
 
-    signApiCall(options) {
+    generateRequest(method:string, url:string, body:any):any {
+        let options = this.getDefaultOptions();
+        options.uri = "/" + BUNQ_API_VERSION + url;
+
+        if (body && method != "GET") {
+            options.body = JSON.stringify(body);
+        }
+        options.method = method;
+        options.headers['X-Bunq-Client-Signature'] = this.signApiCall(options);
+        options.uri = BUNQ_API_SERVICE_URL + options.uri;
+
+        return rp(options);
+    }
+
+    getDefaultOptions():any {
+        return {
+            uri: BUNQ_API_SERVICE_URL,
+            headers: {
+                'Cache-Control': 'no-cache',
+                'User-Agent': 'bunq-TestSerdver/1.00 sandbox/0.17b',
+                'X-Bunq-Language': 'en_US',
+                'X-Bunq-Region': 'en_US',
+                'X-Bunq-Geolocation': '0 0 0 00 NL',
+                'X-Bunq-Client-Request-Id': randomstring.generate(7),
+                'X-Bunq-Client-Authentication': this.sessionToken,
+            }
+        };
+    }
+
+    signApiCall(options:any):any {
         let stringToSign = options.method + " ";
         stringToSign += options.uri;
         stringToSign += "\n";
@@ -138,7 +140,7 @@ class Bunq {
     }
 
     // credit to http://stackoverflow.com/questions/9658690/is-there-a-way-to-sort-order-keys-in-javascript-objects
-    orderKeys(obj, expected) {
+    orderKeys(obj:any):any {
 
         var keys = Object.keys(obj).sort(function keyOrder(k1, k2) {
             if (k1 < k2) return -1;
@@ -146,21 +148,27 @@ class Bunq {
             else return 0;
         });
 
-        var i, after = {};
-        for (i = 0; i < keys.length; i++) {
+        var after:any = {};
+        for (let i = 0; i < keys.length; i++) {
             after[keys[i]] = obj[keys[i]];
             delete obj[keys[i]];
         }
 
-        for (i = 0; i < keys.length; i++) {
+        for (let i = 0; i < keys.length; i++) {
             obj[keys[i]] = after[keys[i]];
         }
         return obj;
     }
 
-    parseResponse(response) {
+    parseResponse(response:any):any {
         return JSON.parse(response)["Response"];
     }
 
+    installationToken:string;
+    apiKey:string;
+    privateKey:string;
+    sessionToken:string;
+
+
+
 }
-module.exports = Bunq;

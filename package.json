@@ -6,8 +6,6 @@
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
-      "ts",
-      "tsx",
       "js"
     ]
   },
@@ -20,6 +18,8 @@
   },
   "dependencies": {
     "file-system": "^2.2.2",
+    "fs-extra": "^3.0.1",
+    "moment": "^2.18.1",
     "node-datetime": "^1.0.0",
     "node-rsa": "^0.4.2",
     "randomstring": "^1.1.5",
@@ -31,8 +31,8 @@
     "@types/jest": "^19.2.3",
     "@types/node": "^7.0.18",
     "babel-jest": "^20.0.0",
-    "jest": "^20.0.0",
-    "ts-jest": "^20.0.2"
+    "jest": "^20.0.3",
+    "ts-jest": "^20.0.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

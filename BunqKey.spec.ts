@@ -1,11 +1,11 @@
-const NodeRSA = require('node-rsa');
 import {} from 'jest';
 import {BunqKey} from "./BunqKey";
+const NodeRSA = require('node-rsa');
 
 describe("BunqKey", () => {
 
     let input = "this is the string to encode and decode";
-    let bunqKey = new BunqKey();
+    let bunqKey:BunqKey = BunqKey.createNew();
     let key = bunqKey.key;
     let pubKey = new NodeRSA();
     pubKey.importKey(bunqKey.toPublicKeyString(),'public');
@@ -17,6 +17,7 @@ describe("BunqKey", () => {
     });
 
     test("that privKey encoded string equals decoded string", () => {
+
         let encrypted = key.encrypt(input, 'base64');
         let decrypted = key.decrypt(encrypted, 'utf8');
         expect(decrypted).toMatch(input);
@@ -36,6 +37,19 @@ describe("BunqKey", () => {
     test("that signature with privateKey is valid, verified with pubKey", () => {
         let sig = key.sign(input,'base64','utf8');
         expect(pubKey.verify(input, sig, 'utf8','base64')).toBe(true);
+    });
+
+    test("that invalid signature with privateKey is invalid, verified with pubKey", () => {
+        let sig = key.sign(input,'base64','utf8');
+        expect(pubKey.verify(input+"invalidate", sig, 'utf8','base64')).toBe(false);
+    });
+
+    test("that exporting private pem key works",() => {
+        let privatePem:string = bunqKey.toPrivateKeyString();
+        let newKey:BunqKey = new BunqKey(privatePem);
+        let encrypted = newKey.key.encrypt(input, 'base64');
+        let decrypted = key.decrypt(encrypted, 'utf8');
+        expect(decrypted).toMatch(input);
     });
 
 });

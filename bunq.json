@@ -1,0 +1,6 @@
+{
+  "publicKeyFile" : "../keys/cofPublicKey.pem",
+  "privateKeyFile" : "../keys/cofPrivateKey.pem",
+  "installationTokenFile" : "../keys/bunqInstallationToken.json",
+  "deviceServerConfigFile" : "../keys/bunqDeviceServerConfig.json"
+}
