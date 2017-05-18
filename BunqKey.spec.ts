@@ -4,10 +4,12 @@ const NodeRSA = require('node-rsa');
 
 describe("BunqKey", () => {
 
-    let input = "this is the string to encode and decode";
-    let bunqKey:BunqKey = BunqKey.createNew();
-    let key = bunqKey.key;
-    let pubKey = new NodeRSA();
+    const testDataPath:string = "./testData";
+    const  input = "this is the string to encode and decode";
+    const bunqKey:BunqKey = BunqKey.createFromPrivateKeyFile(testDataPath+"/privateKey.pem");
+    const otherKey:BunqKey = BunqKey.createFromPrivateKeyFile(testDataPath+"/WrongPrivateKey.pem");
+    const key = bunqKey.key;
+    const pubKey = new NodeRSA();
     pubKey.importKey(bunqKey.toPublicKeyString(),'public');
 
     test("that key is valid", () => {

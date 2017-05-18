@@ -2,16 +2,18 @@ import {BunqApiConfig} from "./BunqApiConfig";
 import {BunqApiSetup} from "./BunqApiSetup";
 import fs = require('fs');
 import {BunqConnection} from "./BunqConnection";
+import {BunqKey} from "./BunqKey";
 
 const dateTime = require('node-datetime');
 var dt = dateTime.create();
 var dateTimeString = dt.format('YmdHMS');
 
 const config:BunqApiConfig = new BunqApiConfig();
-const publicKeyPem:string=config.read(config.json.publicKeyFile);
-const setup:BunqApiSetup=new BunqApiSetup(new BunqConnection());
+//const publicKeyPem:string=config.read(config.json.publicKeyFile);
+const key:BunqKey = BunqKey.createFromPrivateKeyFile(config.json.privateKeyFile);
+const setup:BunqApiSetup=new BunqApiSetup(new BunqConnection(),key,"","");
 
-setup.installKey(publicKeyPem).then(function(response:string){
+setup.installKey().then(function(response:string){
     console.log(response);
     fs.writeFileSync("../keys/bunqInstallationToken"+dateTimeString+".json", response);
     let resp : any = JSON.parse(response);

@@ -3,7 +3,7 @@
 A wrapper for part of the Bunq API v1 in Type-/JavaScript forked from Simon Schraeders https://github.com/c0dr/bunq
 
 
-intended functionality:
+intended functionality
 
 - authentication procedure with Bunq server consisting of
     - key creation and installation
@@ -31,7 +31,7 @@ prerequisites
 - typescript: npm install -g typescript
 - jest: https://facebook.github.io/jest/
 
-clone, compile, run tests
+clone, compile, test
 
 - git clone https://github.com/cofdev0/bunq.git bunq
 - cd bunq

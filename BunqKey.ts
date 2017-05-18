@@ -1,5 +1,5 @@
 const  NodeRSA = require('node-rsa');
-
+import fs = require('fs-extra');
 
 export class BunqKey {
 
@@ -15,6 +15,11 @@ export class BunqKey {
         });
         let privateKeyString = aKey.exportKey('pkcs8-private-pem');
         return new this(privateKeyString);
+    }
+
+    static createFromPrivateKeyFile(pemFilename:string) {
+        const buffer = fs.readFileSync(pemFilename);
+        return new this(buffer.toString());
     }
 
     toPublicKeyString() : string {

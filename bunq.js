@@ -7,7 +7,7 @@ const NodeRSA = require('node-rsa');
 const BUNQ_API_SERVICE_URL = 'https://api.bunq.com';
 const BUNQ_API_VERSION = 'v1';
 
-class Bunq {
+export class Bunq {
 
     constructor(installationToken, apiKey, privateKey) {
         this.installationToken = installationToken;
@@ -163,4 +163,3 @@ class Bunq {
     }
 
 }
-module.exports = Bunq;
