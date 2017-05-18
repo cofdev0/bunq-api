@@ -143,7 +143,7 @@ describe("BunqApiSetup", () => {
             console.log("error! we should not be here! "+response);
             expect(true).toBeFalsy();
         }).catch(function(error:string){
-            console.log("expected error!")
+            //console.log("expected error!")
         });
     });
 

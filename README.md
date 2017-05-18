@@ -26,3 +26,16 @@ intended functionality:
     - https://doc.bunq.com/api/1/page/callbacks
     
 
+prerequisites
+- node.js: https://nodejs.org/en/download/
+- typescript: npm install -g typescript
+- jest: https://facebook.github.io/jest/
+
+clone, compile, run tests
+
+- git clone https://github.com/cofdev0/bunq.git bunq
+- cd bunq
+- npm init
+- npm install
+- tsc
+- jest
