@@ -16,7 +16,12 @@ export class BunqConnectionMock {
         if(options.uri.indexOf("installation")!==-1) return this.requestInstallation(options);
         if(options.uri.indexOf("device-server")!==-1) return this.requestDeviceServer(options);
         if(options.uri.indexOf("session-server")!==-1) return this.requestSessionServer(options);
+        if((options.uri.indexOf("payment")!==-1)
+            &&(options.method=="POST")) return this.sendPayment(options);
+        if(options.uri.indexOf("payment")!==-1) return this.requestPayments(options);
+        if(options.uri.indexOf("monetary-account-bank")!==-1) return this.requestMoneytaryAccountBank(options);
         if(options.uri.indexOf("user")!==-1) return this.requestUser(options);
+
         // return new Promise((resolve, reject) => {
         //     reject("unknown endPoint!")
         // });
@@ -45,16 +50,40 @@ export class BunqConnectionMock {
         return new Promise((resolve, reject) => {
             if(!this.verifyRequestSignature(options)) return reject("signature wrong");
             // todo: verify installation key
-            const sessionResponse:string=BunqApiConfig.readJson(testDataPath+"/bunqSessionServerOriginal.json");
-            resolve(JSON.stringify(sessionResponse));
+            const response:string=BunqApiConfig.readJson(testDataPath+"/bunqSessionServerOriginal.json");
+            resolve(JSON.stringify(response));
         });
     }
 
     requestUser(options:any) : Promise<any> {
         return new Promise((resolve, reject) => {
             if(!this.verifyRequestSignature(options)) return reject("signature wrong");
-            const sessionResponse:string=BunqApiConfig.readJson(testDataPath+"/requestUserResponse.json");
-            resolve(JSON.stringify(sessionResponse));
+            const response:string=BunqApiConfig.readJson(testDataPath+"/requestUserResponse.json");
+            resolve(JSON.stringify(response));
+        });
+    }
+
+    requestMoneytaryAccountBank(options:any) : Promise<any> {
+        return new Promise((resolve, reject) => {
+            if(!this.verifyRequestSignature(options)) return reject("signature wrong");
+            const response:string=BunqApiConfig.readJson(testDataPath+"/requestMABResponse.json");
+            resolve(JSON.stringify(response));
+        });
+    }
+
+    requestPayments(options:any) : Promise<any> {
+        return new Promise((resolve, reject) => {
+            if(!this.verifyRequestSignature(options)) return reject("signature wrong");
+            const response:string=BunqApiConfig.readJson(testDataPath+"/requestPaymentsResponse.json");
+            resolve(JSON.stringify(response));
+        });
+    }
+
+    sendPayment(options:any) : Promise<any> {
+        return new Promise((resolve, reject) => {
+            if(!this.verifyRequestSignature(options)) return reject("signature wrong");
+            const response:string=BunqApiConfig.readJson(testDataPath+"/sendPaymentResponse.json");
+            resolve(JSON.stringify(response));
         });
     }
 

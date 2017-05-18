@@ -1,4 +1,5 @@
 {
   "description" : "test device server",
-  "secret" : "secretApiKeyThisIs"
+  "secret" : "secretApiKeyThisIs",
+  "userId" : "1"
 }

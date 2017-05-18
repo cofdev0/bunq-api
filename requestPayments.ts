@@ -5,11 +5,7 @@ import {BunqKey} from "./BunqKey";
 import {BunqApi} from "./BunqApi";
 import fs = require('fs');
 
-const dateTime = require('node-datetime');
-var dt = dateTime.create();
-var dateTimeString = dt.format('YmdHMS');
-
-const sessionPath = "../keys";
+const keysPath = "../keys";
 const config:BunqApiConfig = new BunqApiConfig();
 const deviceServerConfig = BunqApiConfig.readJson(config.json.deviceServerConfigFile);
 const privateKeyPem:string=BunqApiConfig.read(config.json.privateKeyFile);
@@ -18,11 +14,20 @@ const installationTokenConfig = BunqApiConfig.readJson(config.json.installationT
 const installationToken:string=installationTokenConfig.Response[1].Token.token;
 const connect:BunqConnection = new BunqConnection();
 const setup:BunqApiSetup=new BunqApiSetup(connect,key,deviceServerConfig.secret,installationToken);
-const bunqApi:BunqApi=new BunqApi(connect, key,deviceServerConfig.secret,setup,sessionPath);
+const bunqApi:BunqApi=new BunqApi(connect, key,deviceServerConfig.secret,setup,keysPath);
 
 
-bunqApi.updateSession().then(function(response:string){
-    console.log("current session token:"+response);
+bunqApi.requestPayments(deviceServerConfig.userId, deviceServerConfig.accountId).then((response:string)=>{
+    console.log(response);
+    fs.writeFileSync(keysPath+"/requestPaymentsResponse.json", response);
+    let resp:any = JSON.parse(response);
+    for(let r of resp.Response)  {
+        console.log(r.Payment.created
+            +" "+r.Payment.amount.value+"EUR"
+            +" <"+r.Payment.counterparty_alias.display_name+">"
+            +" "+r.Payment.counterparty_alias.iban
+            +" <"+r.Payment.description.replace("\n","")+">");
+    }
 }).catch(function(error:string){
     console.log("error : "+error);
 });

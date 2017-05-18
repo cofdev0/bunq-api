@@ -5,9 +5,7 @@
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "js"
-    ]
+    "moduleFileExtensions": ["js", "jsx"]
   },
   "name": "bunq",
   "version": "0.0.1",

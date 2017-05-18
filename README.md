@@ -12,17 +12,18 @@ intended functionality
     - https://doc.bunq.com/api/1/page/authentication
     
     
-- account information 
+- information request
+    - user
     - balance
     - transactions
     - https://doc.bunq.com/api/1/call/monetary-account
     
     
-- payment to SEPA accounts
+- payment to IBAN
     - https://doc.bunq.com/api/1/call/payment
 
 
-- installing of callbacks to an URL
+- install callback to an URL
     - https://doc.bunq.com/api/1/page/callbacks
     
 

@@ -16,17 +16,19 @@ const BUNQ_API_VERSION = 'v1';
 
 export class BunqApi {
 
-    constructor(aConnection:BunqServerConnection, privateKey:BunqKey, aSecretApiKey:string, aSessionCreator:SessionCreator) {
+    constructor(aConnection:BunqServerConnection, privateKey:BunqKey, aSecretApiKey:string,
+                aSessionCreator:SessionCreator, aSessionPath:string) {
         this.privateKey = privateKey;
         this.apiKey = aSecretApiKey;
         this.sessionCreator = aSessionCreator;
         this.connection=aConnection;
+        this.sessionPath=aSessionPath;
         this.sessionToken="";
     }
 
-    updateSession(sessionPath:string) : Promise<any> {
-        const sessionArchivePath = sessionPath+"/sessions";
-        const sessionFilename:string = sessionPath + "/bunqSession.json";
+    updateSession() : Promise<any> {
+        const sessionArchivePath = this.sessionPath+"/sessions";
+        const sessionFilename:string = this.sessionPath + "/bunqSession.json";
 
         return new Promise((resolve, reject) => {
 
@@ -66,36 +68,58 @@ export class BunqApi {
         return this.sessionToken;
     }
 
-
-
-
     requestUser() : Promise<any> {
-        let options:any = this.createOptions("GET", "/user");
-        return this.connection.request(options);
+        return this.updateSession().then(()=>{
+            let options:any = this.createOptions("GET", "/user");
+            return this.connection.request(options);
+        });
     }
 
+    requestMonetaryAccountBank(userId:string, accountId?:string) : Promise<any> {
+        return this.updateSession().then(()=>{
+            let accountIdString:string = accountId ? "/"+accountId : "";
+            let options:any = this.createOptions("GET", "/user/"+userId+"/monetary-account-bank"+accountIdString);
+            return this.connection.request(options);
+        });
+    }
 
+    requestPayments(userId:string, accountId:string) : Promise<any> {
+        return this.updateSession().then(()=>{
+            let options:any = this.createOptions("GET", "/user/"+userId+"/monetary-account/"+accountId+"/payment");
+            return this.connection.request(options);
+        });
+    }
 
-
-    private sessionCreator:SessionCreator;
-    private connection:BunqServerConnection;
-    private apiKey:string;
-    private privateKey:BunqKey;
-    private sessionToken:string;
-
+    sendPayment(userId:string, accountId:string, value:string, iban:string, name:string, description:string) : Promise<any> {
+        return this.updateSession().then(()=>{
+            let options:any = this.createOptions("POST", "/user/"+userId+"/monetary-account/"+accountId+"/payment",
+                {
+                    "amount": {
+                    "value": value,
+                    "currency": "EUR"
+                },
+                    "counterparty_alias": {
+                        "type": "IBAN",
+                        "value": iban,
+                        "name": name
+                    },
+                    "description": description
+                });
+            return this.connection.request(options);
+        });
+    }
 
     private createOptions(method:string, endPoint:string, body?:any) : any {
-        // let options = this.createDefaultOptions();
-        // options.uri = BUNQ_API_SERVICE_URL + "/" + BUNQ_API_VERSION + endPoint;
-        // if (body && method != "GET") {
-        //     options.body = JSON.stringify(body);
-        // }
-        // options.method = method;
-        // this.sessionUpdater.updateSession();
-        // options.headers['X-Bunq-Client-Authentication'] = sessionToken;
-        // options.headers['X-Bunq-Client-Signature'] = this.privateKey.signApiCall(options);
-        //
-        // return options;
+        let options = this.createDefaultOptions();
+        options.uri = BUNQ_API_SERVICE_URL + "/" + BUNQ_API_VERSION + endPoint;
+        if (body && method != "GET") {
+            options.body = JSON.stringify(body);
+        }
+        options.method = method;
+        options.headers['X-Bunq-Client-Authentication'] = this.sessionToken;
+        options.headers['X-Bunq-Client-Signature'] = this.privateKey.signApiCall(options);
+
+        return options;
     }
 
     private createDefaultOptions():any {
@@ -112,6 +136,13 @@ export class BunqApi {
         };
     }
 
+
+    private sessionCreator:SessionCreator;
+    private connection:BunqServerConnection;
+    private apiKey:string;
+    private privateKey:BunqKey;
+    private sessionToken:string;
+    private sessionPath:string;
 
 
     // postDeviceServer(description:string, permittedIps:string[]):any {
