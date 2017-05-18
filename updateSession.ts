@@ -11,10 +11,10 @@ var dateTimeString = dt.format('YmdHMS');
 
 const sessionPath = "../keys";
 const config:BunqApiConfig = new BunqApiConfig();
-const deviceServerConfig = config.readJson(config.json.deviceServerConfigFile);
-const privateKeyPem:string=config.read(config.json.privateKeyFile);
+const deviceServerConfig = BunqApiConfig.readJson(config.json.deviceServerConfigFile);
+const privateKeyPem:string=BunqApiConfig.read(config.json.privateKeyFile);
 const key : BunqKey = new BunqKey(privateKeyPem);
-const installationTokenConfig = config.readJson(config.json.installationTokenFile);
+const installationTokenConfig = BunqApiConfig.readJson(config.json.installationTokenFile);
 const installationToken:string=installationTokenConfig.Response[1].Token.token;
 const connect:BunqConnection = new BunqConnection();
 const setup:BunqApiSetup=new BunqApiSetup(connect,key,deviceServerConfig.secret,installationToken);

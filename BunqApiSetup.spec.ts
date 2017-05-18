@@ -11,10 +11,9 @@ describe("BunqApiSetup", () => {
     const testDataPath:string = "./testData";
 
     const connect = new BunqConnectionMock();
-    const config:BunqApiConfig = new BunqApiConfig();
-    const deviceServerConfig = config.readJson(testDataPath+"/bunqDeviceServerConfig.json");
+    const deviceServerConfig = BunqApiConfig.readJson(testDataPath+"/bunqDeviceServerConfig.json");
     const key : BunqKey = BunqKey.createFromPrivateKeyFile(testDataPath+"/privateKey.pem");
-    const installationTokenConfig = config.readJson(testDataPath+"/bunqInstallationToken.json");
+    const installationTokenConfig = BunqApiConfig.readJson(testDataPath+"/bunqInstallationToken.json");
     const installationToken:string=installationTokenConfig.Response[1].Token.token;
     const setup : BunqApiSetup = new BunqApiSetup(connect, key, deviceServerConfig.secret, installationToken);
     const wrongKey : BunqKey = BunqKey.createFromPrivateKeyFile(testDataPath+"/wrongPrivateKey.pem");

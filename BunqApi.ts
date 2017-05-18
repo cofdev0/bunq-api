@@ -21,26 +21,30 @@ export class BunqApi {
         this.apiKey = aSecretApiKey;
         this.sessionCreator = aSessionCreator;
         this.connection=aConnection;
+        this.sessionToken="";
     }
 
     updateSession(sessionPath:string) : Promise<any> {
         const sessionArchivePath = sessionPath+"/sessions";
+        const sessionFilename:string = sessionPath + "/bunqSession.json";
+
         return new Promise((resolve, reject) => {
-            const sessionFilename:string = sessionPath + "/bunqSession.json";
+
             if(fs.existsSync(sessionFilename)) {
-                const config: BunqApiConfig = new BunqApiConfig();
-                const sessionResponseJson: any = config.readJson(sessionFilename);
+                const sessionResponseJson: any = BunqApiConfig.readJson(sessionFilename);
                 const token: string = sessionResponseJson.Response[1].Token.token;
                 const createString: string = sessionResponseJson.Response[1].Token.created;
                 const created = moment(createString);
                 const now = moment();
                 const nextUpdate = created.add(1, "days");
+
                 if (nextUpdate.isAfter(now)) {
+                    this.sessionToken=token;
                     resolve(token);
                     return;
                 }
             }
-            this.sessionCreator.createSessionServer().then(function (response) {
+            this.sessionCreator.createSessionServer().then( (response) => {
                 const now = moment();
                 //console.log(response);
                 let respJson:any=JSON.parse(response);
@@ -50,11 +54,16 @@ export class BunqApi {
                 fs.writeFileSync(sessionArchivePath + "/bunqSession_" + now.format("YYYYMMDDHHmmss") + ".json", response);
                 const sessionResponseJson: any = JSON.parse(response);
                 const token: string = sessionResponseJson.Response[1].Token.token;
+                this.sessionToken=token;
                 resolve(token);
             }).catch(function (error) {
                 reject(error);
             });
         });
+    }
+
+    getSessionToken():string {
+        return this.sessionToken;
     }
 
 
@@ -64,6 +73,15 @@ export class BunqApi {
         let options:any = this.createOptions("GET", "/user");
         return this.connection.request(options);
     }
+
+
+
+
+    private sessionCreator:SessionCreator;
+    private connection:BunqServerConnection;
+    private apiKey:string;
+    private privateKey:BunqKey;
+    private sessionToken:string;
 
 
     private createOptions(method:string, endPoint:string, body?:any) : any {
@@ -94,10 +112,7 @@ export class BunqApi {
         };
     }
 
-    sessionCreator:SessionCreator;
-    connection:BunqServerConnection;
-    apiKey:string;
-    privateKey:BunqKey;
+
 
     // postDeviceServer(description:string, permittedIps:string[]):any {
     //     return this.generateRequest("POST", "/device-server", {

@@ -24,8 +24,7 @@ export class BunqConnectionMock {
 
     requestInstallation(options:any) : Promise<any> {
         return new Promise((resolve, reject) => {
-            const config:BunqApiConfig = new BunqApiConfig();
-            let installationResponse:string = config.read(testDataPath+"/installationResponse.json");
+            let installationResponse:string = BunqApiConfig.read(testDataPath+"/installationResponse.json");
             resolve(installationResponse);
         });
     }
@@ -46,8 +45,7 @@ export class BunqConnectionMock {
         return new Promise((resolve, reject) => {
             if(!this.verifyRequestSignature(options)) return reject("signature wrong");
             // todo: verify installation key
-            const config:BunqApiConfig = new BunqApiConfig();
-            const sessionResponse:string=config.readJson(testDataPath+"/bunqSessionServerOriginal.json");
+            const sessionResponse:string=BunqApiConfig.readJson(testDataPath+"/bunqSessionServerOriginal.json");
             resolve(JSON.stringify(sessionResponse));
         });
     }
@@ -55,15 +53,13 @@ export class BunqConnectionMock {
     requestUser(options:any) : Promise<any> {
         return new Promise((resolve, reject) => {
             if(!this.verifyRequestSignature(options)) return reject("signature wrong");
-            const config:BunqApiConfig = new BunqApiConfig();
-            const sessionResponse:string=config.readJson(testDataPath+"/requestUserResponse.json");
+            const sessionResponse:string=BunqApiConfig.readJson(testDataPath+"/requestUserResponse.json");
             resolve(JSON.stringify(sessionResponse));
         });
     }
 
     private verifyRequestSignature(options:any):boolean {
-        const config:BunqApiConfig = new BunqApiConfig();
-        const privateKeyPem:string=config.read(testDataPath+"/privateKey.pem");
+        const privateKeyPem:string=BunqApiConfig.read(testDataPath+"/privateKey.pem");
         const key : BunqKey = new BunqKey(privateKeyPem);
         return key.verifySigWithPubkey(options);
     }
