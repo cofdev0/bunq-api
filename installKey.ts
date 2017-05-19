@@ -14,7 +14,7 @@ const setup:BunqApiSetup=new BunqApiSetup(new BunqConnection(),key,"","");
 
 setup.installKey().then(function(response:string){
     console.log(response);
-    fs.writeFileSync("../keys/bunqInstallationToken"+dateTimeString+".json", response);
+    fs.writeFileSync(config.json.secretsPath+"/bunqInstallationToken"+dateTimeString+".json", response);
     let resp : any = JSON.parse(response);
     console.log("installation token: "+resp[0].Token.token);
     console.log("Bunq server public key: "+resp[0].server_public_key);

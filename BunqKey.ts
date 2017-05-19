@@ -8,13 +8,16 @@ export class BunqKey {
     }
 
     static createNew():BunqKey {
-        let aKey:any = new NodeRSA({
-            b: 2048,
-            encryptionScheme: 'pkcs1',
-            signingScheme: 'pkcs1-sha256'
-        });
-        let privateKeyString = aKey.exportKey('pkcs8-private-pem');
-        return new this(privateKeyString);
+        /* istanbul ignore next */
+        {
+            let aKey: any = new NodeRSA({
+                b: 2048,
+                encryptionScheme: 'pkcs1',
+                signingScheme: 'pkcs1-sha256'
+            });
+            let privateKeyString = aKey.exportKey('pkcs8-private-pem');
+            return new this(privateKeyString);
+        }
     }
 
     static createFromPrivateKeyFile(pemFilename:string) {

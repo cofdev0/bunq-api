@@ -74,6 +74,18 @@ describe("BunqApiSetup", () => {
         });
     });
 
+    it("can not setup session-server with BunqConnectionMock given a wrong installation token", () => {
+        const wrongInstTokenSetup : BunqApiSetup
+            = new BunqApiSetup(connect, key, deviceServerConfig.secret, installationToken+"WrongNow");
+
+        wrongInstTokenSetup.createSessionServer().then(function(response:string){
+            console.log("this is not expected:"+response);
+            expect(true).toBeFalsy();
+        }).catch(function(error:string){
+            // console.log("expected error:"+error)
+            expect(error).toEqual("installation token wrong");
+        });
+    });
 
 
 
