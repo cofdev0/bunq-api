@@ -61,14 +61,15 @@ export class BunqKey {
     createStringToSign(options:any) : string {
         let stringToSign:string = options.method + " ";
         let endPoint:string = options.uri;
-        if(options.uri.indexOf("bunq.com") != -1) endPoint = (options.uri.split("bunq.com"))[1];
+        //if(options.uri.indexOf("bunq.com") != -1)
+        endPoint = (options.uri.split("bunq.com"))[1];
         stringToSign += endPoint;
         stringToSign += "\n";
 
         // We need to order the headers
         const orderedHeaders = this.orderKeys(options.headers);
         Object.keys(orderedHeaders).forEach(function(key) {
-            if (key.startsWith("X-Bunq-") || key == "Cache-Control" || key == "User-Agent")
+            //if (key.startsWith("X-Bunq-") || key == "Cache-Control" || key == "User-Agent")
                 stringToSign += key + ": " + orderedHeaders[key] + "\n";
         });
         stringToSign += "\n";

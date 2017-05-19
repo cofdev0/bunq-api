@@ -71,6 +71,13 @@ export class BunqApi {
         });
     }
 
+    requestSomething() : Promise<any> {
+        return this.updateSession().then(()=>{
+            let options:any = this.createOptions("GET", "/something");
+            return this.connection.request(options);
+        });
+    }
+
     requestMonetaryAccountBank(userId:string, accountId?:string) : Promise<any> {
         return this.updateSession().then(()=>{
             let accountIdString:string = accountId ? "/"+accountId : "";

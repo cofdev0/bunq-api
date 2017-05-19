@@ -146,6 +146,17 @@ describe("BunqApi", () => {
         });
     });
 
+    it("can not request something weird", () => {
+        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,
+            config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
+        bunqApi.requestSomething().then((response:string)=>{
+            console.log("should not be here! "+response);
+            expect(true).toBeFalsy();
+        }).catch(function(error:string){
+            //console.log(error);
+            expect(error).toBe("unknown endPoint");
+        });
+    });
 
     function removeSessionFiles():void {
         if(fs.existsSync(sessionFilename)) {

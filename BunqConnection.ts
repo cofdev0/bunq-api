@@ -24,10 +24,12 @@ export class BunqConnectionMock {
             else if(options.uri.indexOf("payment")!==-1) return this.requestPayments(options);
             else if(options.uri.indexOf("monetary-account-bank")!==-1) return this.requestMoneytaryAccountBank(options);
             else if(options.uri.indexOf("user")!==-1) return this.requestUser(options);
+            else
+
+            return Promise.reject("unknown endPoint");
         }
 
-        /* istanbul ignore next */
-        return Promise.reject("unknown endPoint");
+
     }
 
     requestInstallation(options:any) : Promise<any> {

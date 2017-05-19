@@ -7,11 +7,11 @@ const BUNQ_API_VERSION = 'v1';
 
 export class BunqApiSetup {
 
-    constructor(aConnection:BunqServerConnection, aKey:BunqKey, aSecretApiKey:string, aInstallationToken?:string) {
+    constructor(aConnection:BunqServerConnection, aKey:BunqKey, aSecretApiKey:string, aInstallationToken:string) {
         this.connection=aConnection;
         this.key=aKey;
         this.secretApiKey=aSecretApiKey;
-        if(aInstallationToken) this.installationToken=aInstallationToken;
+        this.installationToken=aInstallationToken;
     }
 
     installKey() : Promise<any> {
