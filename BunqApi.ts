@@ -23,40 +23,45 @@ export class BunqApi {
     }
 
     updateSession() : Promise<any> {
-        // const sessionArchivePath = this.sessionHistoryPath;
-        //const sessionFilename:string = this.sessionHistoryPath + "/bunqSession.json";
 
-        return new Promise((resolve, reject) => {
+        if(!fs.existsSync(this.sessionFilename)) {
+            return this.requestAndStoreSessionToken();
+        }
 
-            if(fs.existsSync(this.sessionFilename)) {
-                const sessionResponseJson: any = BunqApiConfig.readJson(this.sessionFilename);
-                const token: string = sessionResponseJson.Response[1].Token.token;
-                const createString: string = sessionResponseJson.Response[1].Token.created;
-                const created = moment(createString);
-                const now = moment();
-                const nextUpdate = created.add(1, "days");
+        const sessionResponseJson: any = BunqApiConfig.readJson(this.sessionFilename);
+        const token: string = sessionResponseJson.Response[1].Token.token;
+        const createString: string = sessionResponseJson.Response[1].Token.created;
+        const created = moment(createString);
+        const now = moment();
+        const nextUpdate = created.add(1, "days");
 
-                if (nextUpdate.isAfter(now)) {
-                    this.sessionToken=token;
-                    resolve(token);
-                    return;
-                }
-            }
-            this.sessionCreator.createSessionServer().then( (response) => {
-                const now = moment();
-                //console.log(response);
-                let respJson:any=JSON.parse(response);
-                respJson.Response[1].Token.created=now.format("YYYY-MM-DD HH:mm:ss");
-                fs.writeFileSync(this.sessionFilename, JSON.stringify(respJson));
-                fs.ensureDirSync(this.sessionHistoryPath);
-                fs.writeFileSync(this.sessionHistoryPath + "/bunqSession_" + now.format("YYYYMMDDHHmmss") + ".json", response);
-                const sessionResponseJson: any = JSON.parse(response);
-                const token: string = sessionResponseJson.Response[1].Token.token;
-                this.sessionToken=token;
-                resolve(token);
-            }).catch(function (error) {
-                reject(error);
-            });
+        if(nextUpdate.isAfter(now)) {
+            this.sessionToken=token;
+            return Promise.resolve(token);
+            //return;
+        }
+
+        return this.requestAndStoreSessionToken();
+
+
+
+    }
+
+    requestAndStoreSessionToken():Promise<any> {
+        return this.sessionCreator.createSessionServer().then((response) => {
+            const now = moment();
+            //console.log(response);
+            let respJson:any=JSON.parse(response);
+            respJson.Response[1].Token.created=now.format("YYYY-MM-DD HH:mm:ss");
+            fs.writeFileSync(this.sessionFilename, JSON.stringify(respJson));
+            fs.ensureDirSync(this.sessionHistoryPath);
+            fs.writeFileSync(this.sessionHistoryPath + "/bunqSession_" + now.format("YYYYMMDDHHmmss") + ".json", response);
+            const sessionResponseJson: any = JSON.parse(response);
+            const token: string = sessionResponseJson.Response[1].Token.token;
+            this.sessionToken=token;
+            return Promise.resolve(token);
+        }).catch(function (error) {
+            return Promise.reject(error);
         });
     }
 

@@ -40,7 +40,7 @@ describe("BunqApi", () => {
         });
     });
 
-    it("updates an existing session token file by querying session server if needed", () => {
+    it("does not update an existing session token file if not older than a day", () => {
         const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,
             config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
         removeSessionFiles();
@@ -61,6 +61,23 @@ describe("BunqApi", () => {
         });
     });
 
+    it("updates an existing session token file if too old", () => {
+        const expectedToken:string="b165cce82bbd229b55962f90b4efedd706b3f616f0de831547ff62262f2924e3";
+        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,
+            config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
+        removeSessionFiles();
+        const bunqSessionOldJson:any=BunqApiConfig.readJson(testDataPath+"/bunqSessionOld.json");
+        fs.writeFileSync(config.json.bunqSessionFile, JSON.stringify(bunqSessionOldJson));
+        bunqApi.updateSession().then((response:string)=>{
+            const token:string = response;
+            //console.log("new token:"+token);
+            expect(token).toEqual(expectedToken);
+        }).catch(function(error:string){
+            console.log("error1:"+error)
+            expect(true).toBeFalsy();
+        });
+    });
+
     it("updates internal sessionToken when updateSession is called", () => {
         const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,
             config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
@@ -69,7 +86,7 @@ describe("BunqApi", () => {
         //console.log("before:"+beforeUpdateToken);
         expect(beforeUpdateToken.length).toEqual(0);
         bunqApi.updateSession().then((response:string)=>{
-            const token:string = response;
+            //const token:string = response;
             const afterUpdateToken:string=bunqApi.getSessionToken();
             //console.log("after:"+afterUpdateToken);
             expect(afterUpdateToken.length).toBeGreaterThan(0);
@@ -105,10 +122,23 @@ describe("BunqApi", () => {
         });
     });
 
-    it("can request MonetaryAccountBank", () => {
+    it("can request all accounts of user with MonetaryAccountBank", () => {
         const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,
             config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
         bunqApi.requestMonetaryAccountBank(deviceServerConfig.userId).then((response:string)=>{
+            //console.log("ok:"+response);
+            let resp:any = JSON.parse(response);
+            expect(resp.Response[0].MonetaryAccountBank.balance.value).toBe("12.50");
+        }).catch(function(error:string){
+            console.log(error);
+            expect(true).toBeFalsy();
+        });
+    });
+
+    it("can request a single account of user with MonetaryAccountBank", () => {
+        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,
+            config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
+        bunqApi.requestMonetaryAccountBank(deviceServerConfig.userId, "42").then((response:string)=>{
             //console.log("ok:"+response);
             let resp:any = JSON.parse(response);
             expect(resp.Response[0].MonetaryAccountBank.balance.value).toBe("12.50");
