@@ -3,37 +3,33 @@ import {BunqServerConnection, SessionCreator} from "./BunqInterfaces";
 import * as moment from 'moment';
 import {BunqApiConfig} from "./BunqApiConfig";
 import * as fs from "fs-extra";
-const rp = require('request-promise');
 const randomstring = require("randomstring");
-const NodeRSA = require('node-rsa');
-
 
 //const BUNQ_API_SERVICE_URL = 'https://sandbox.public.api.bunq.com';
 const BUNQ_API_SERVICE_URL = 'https://api.bunq.com';
 const BUNQ_API_VERSION = 'v1';
 
-
-
 export class BunqApi {
 
     constructor(aConnection:BunqServerConnection, privateKey:BunqKey, aSecretApiKey:string,
-                aSessionCreator:SessionCreator, aSessionPath:string) {
+                aSessionCreator:SessionCreator, aSessionFilename:string, aSessionHistoryPath:string) {
         this.privateKey = privateKey;
         this.apiKey = aSecretApiKey;
         this.sessionCreator = aSessionCreator;
         this.connection=aConnection;
-        this.sessionPath=aSessionPath;
+        this.sessionFilename=aSessionFilename;
+        this.sessionHistoryPath=aSessionHistoryPath;
         this.sessionToken="";
     }
 
     updateSession() : Promise<any> {
-        const sessionArchivePath = this.sessionPath+"/sessions";
-        const sessionFilename:string = this.sessionPath + "/bunqSession.json";
+        // const sessionArchivePath = this.sessionHistoryPath;
+        //const sessionFilename:string = this.sessionHistoryPath + "/bunqSession.json";
 
         return new Promise((resolve, reject) => {
 
-            if(fs.existsSync(sessionFilename)) {
-                const sessionResponseJson: any = BunqApiConfig.readJson(sessionFilename);
+            if(fs.existsSync(this.sessionFilename)) {
+                const sessionResponseJson: any = BunqApiConfig.readJson(this.sessionFilename);
                 const token: string = sessionResponseJson.Response[1].Token.token;
                 const createString: string = sessionResponseJson.Response[1].Token.created;
                 const created = moment(createString);
@@ -51,9 +47,9 @@ export class BunqApi {
                 //console.log(response);
                 let respJson:any=JSON.parse(response);
                 respJson.Response[1].Token.created=now.format("YYYY-MM-DD HH:mm:ss");
-                fs.writeFileSync(sessionFilename, JSON.stringify(respJson));
-                fs.ensureDirSync(sessionArchivePath);
-                fs.writeFileSync(sessionArchivePath + "/bunqSession_" + now.format("YYYYMMDDHHmmss") + ".json", response);
+                fs.writeFileSync(this.sessionFilename, JSON.stringify(respJson));
+                fs.ensureDirSync(this.sessionHistoryPath);
+                fs.writeFileSync(this.sessionHistoryPath + "/bunqSession_" + now.format("YYYYMMDDHHmmss") + ".json", response);
                 const sessionResponseJson: any = JSON.parse(response);
                 const token: string = sessionResponseJson.Response[1].Token.token;
                 this.sessionToken=token;
@@ -142,7 +138,8 @@ export class BunqApi {
     private apiKey:string;
     private privateKey:BunqKey;
     private sessionToken:string;
-    private sessionPath:string;
+    private sessionFilename:string;
+    private sessionHistoryPath:string;
 
 
     // postDeviceServer(description:string, permittedIps:string[]):any {

@@ -1,11 +1,6 @@
 import {BunqKey} from "./BunqKey";
-
-import {BunqApiConfig} from "./BunqApiConfig";
-
 import {BunqServerConnection} from "./BunqInterfaces";
 const randomstring = require("randomstring");
-
-
 
 const BUNQ_API_SERVICE_URL = 'https://api.bunq.com';
 const BUNQ_API_VERSION = 'v1';

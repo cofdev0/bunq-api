@@ -10,7 +10,7 @@ var dateTimeString = dt.format('YmdHMS');
 
 
 const config:BunqApiConfig = new BunqApiConfig();
-const deviceServerConfig = BunqApiConfig.readJson(config.json.deviceServerConfigFile);
+const deviceServerConfig = BunqApiConfig.readJson(config.json.secretsFile);
 const key : BunqKey = BunqKey.createFromPrivateKeyFile(config.json.privateKeyFile);
 const installationTokenConfig = BunqApiConfig.readJson(config.json.installationTokenFile);
 const installationToken:string=installationTokenConfig.Response[1].Token.token;

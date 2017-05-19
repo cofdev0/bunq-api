@@ -9,7 +9,6 @@ var dt = dateTime.create();
 var dateTimeString = dt.format('YmdHMS');
 
 const config:BunqApiConfig = new BunqApiConfig();
-//const publicKeyPem:string=config.read(config.json.publicKeyFile);
 const key:BunqKey = BunqKey.createFromPrivateKeyFile(config.json.privateKeyFile);
 const setup:BunqApiSetup=new BunqApiSetup(new BunqConnection(),key,"","");
 

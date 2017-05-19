@@ -8,9 +8,9 @@ const dateTime = require('node-datetime');
 var dt = dateTime.create();
 var dateTimeString = dt.format('YmdHMS');
 
-const keysPath = "../keys";
+
 const config:BunqApiConfig = new BunqApiConfig();
-const deviceServerConfig = BunqApiConfig.readJson(config.json.deviceServerConfigFile);
+const deviceServerConfig = BunqApiConfig.readJson(config.json.secretsFile);
 const privateKeyPem:string=BunqApiConfig.read(config.json.privateKeyFile);
 const key : BunqKey = new BunqKey(privateKeyPem);
 const installationTokenConfig = BunqApiConfig.readJson(config.json.installationTokenFile);
@@ -19,9 +19,9 @@ const setup:BunqApiSetup=new BunqApiSetup(new BunqConnection(),key,deviceServerC
 
 setup.createSessionServer().then(function(response:string){
     console.log(response);
-    fs.ensureDirSync(keysPath+"/sessions");
-    fs.writeFileSync(keysPath+"/sessions/bunqSession_"+dateTimeString+".json", response);
-    fs.writeFileSync(keysPath+"/bunqSession.json", response);
+    fs.ensureDirSync(config.json.bunqSessionHistoryPath);
+    fs.writeFileSync(config.json.bunqSessionHistoryPath+"/bunqSession_"+dateTimeString+".json", response);
+    fs.writeFileSync(config.json.bunqSessionFile, response);
     let resp : any = JSON.parse(response);
     console.log("created session server id: "+resp.Response[1].Token.id);
     console.log("created session server token: "+resp.Response[1].Token.token);

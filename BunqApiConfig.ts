@@ -8,6 +8,10 @@ export class BunqApiConfig {
         this.json = JSON.parse(jsonString);
     }
 
+    static createForSpecs():BunqApiConfig {
+        return new BunqApiConfig("./testData/bunqSpecs.json");
+    }
+
     static read(filename:string) : string {
         const buffer = fs.readFileSync(filename);
         return buffer.toString();

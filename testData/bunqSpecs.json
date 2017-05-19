@@ -1,0 +1,10 @@
+{
+  "secretsPath" : "./testData",
+  "secretsFile" : "./testData/bunqSecrets.json",
+  "publicKeyFile" : "./testData/publicKey.pem",
+  "privateKeyFile" : "./testData/privateKey.pem",
+  "installationTokenFile" : "./testData/bunqInstallationToken.json",
+  "bunqSessionHistoryPath" : "./testData/sessions",
+  "bunqSessionFile" : "./testData/bunqSession.json",
+  "bunqSessionHistoryPath" : "./testData/sessions"
+}

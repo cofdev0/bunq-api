@@ -8,12 +8,14 @@ import {BunqApiConfig} from "./BunqApiConfig";
 
 describe("BunqApiSetup", () => {
 
-    const testDataPath:string = "./testData";
+    const config:BunqApiConfig = BunqApiConfig.createForSpecs();
+
+    const testDataPath:string = config.json.secretsPath;
 
     const connect = new BunqConnectionMock();
-    const deviceServerConfig = BunqApiConfig.readJson(testDataPath+"/bunqDeviceServerConfig.json");
-    const key : BunqKey = BunqKey.createFromPrivateKeyFile(testDataPath+"/privateKey.pem");
-    const installationTokenConfig = BunqApiConfig.readJson(testDataPath+"/bunqInstallationToken.json");
+    const deviceServerConfig = BunqApiConfig.readJson(config.json.secretsFile);
+    const key : BunqKey = BunqKey.createFromPrivateKeyFile(config.json.privateKeyFile);
+    const installationTokenConfig = BunqApiConfig.readJson(config.json.installationTokenFile);
     const installationToken:string=installationTokenConfig.Response[1].Token.token;
     const setup : BunqApiSetup = new BunqApiSetup(connect, key, deviceServerConfig.secret, installationToken);
     const wrongKey : BunqKey = BunqKey.createFromPrivateKeyFile(testDataPath+"/wrongPrivateKey.pem");

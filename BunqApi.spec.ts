@@ -5,29 +5,30 @@ import {BunqApiConfig} from "./BunqApiConfig";
 import {BunqApiSetup} from "./BunqApiSetup";
 import {BunqConnectionMock} from "./BunqConnection";
 import * as fs from "fs-extra";
-const NodeRSA = require('node-rsa');
+
+const config:BunqApiConfig = BunqApiConfig.createForSpecs();
+const testDataPath:string = config.json.secretsPath;
+const sessionFilename:string = testDataPath + "/bunqSession.json";
+const testDataSessionHistoryPath:string = config.json.bunqSessionHistoryPath;
+const connect = new BunqConnectionMock();
+const deviceServerConfig = BunqApiConfig.readJson(config.json.secretsFile);
+const privateKeyPem:string=BunqApiConfig.read(config.json.privateKeyFile);
+const key : BunqKey = new BunqKey(privateKeyPem);
+const installationTokenConfig = BunqApiConfig.readJson(config.json.installationTokenFile);
+const installationToken:string=installationTokenConfig.Response[1].Token.token;
+const setup : BunqApiSetup = new BunqApiSetup(connect,key,deviceServerConfig.secret, installationToken);
+const wrongKey : BunqKey = BunqKey.createFromPrivateKeyFile(testDataPath+"/wrongPrivateKey.pem");
+const wrongKeySetup : BunqApiSetup = new BunqApiSetup(connect, wrongKey, deviceServerConfig.secret, installationToken);
+
+const wrongKeyBunqApi:BunqApi = new BunqApi(connect, wrongKey, deviceServerConfig.secret, wrongKeySetup,
+    config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
 
 describe("BunqApi", () => {
 
-    const testDataPath:string = "./testData";
-    const sessionFilename:string = testDataPath + "/bunqSession.json";
-    const testDataSessionHistoryPath:string = "./testData/sessions";
-
-    const connect = new BunqConnectionMock();
-
-    const deviceServerConfig = BunqApiConfig.readJson(testDataPath+"/bunqDeviceServerConfig.json");
-    const privateKeyPem:string=BunqApiConfig.read(testDataPath+"/privateKey.pem");
-    const key : BunqKey = new BunqKey(privateKeyPem);
-    const installationTokenConfig = BunqApiConfig.readJson(testDataPath+"/bunqInstallationToken.json");
-    const installationToken:string=installationTokenConfig.Response[1].Token.token;
-    const setup : BunqApiSetup = new BunqApiSetup(connect,key,deviceServerConfig.secret, installationToken);
-    const wrongKey : BunqKey = BunqKey.createFromPrivateKeyFile(testDataPath+"/wrongPrivateKey.pem");
-    const wrongKeySetup : BunqApiSetup = new BunqApiSetup(connect, wrongKey, deviceServerConfig.secret, installationToken);
-
-    const wrongKeyBunqApi:BunqApi = new BunqApi(connect,wrongKey,deviceServerConfig.secret, wrongKeySetup,testDataPath);
 
     it("creates a file with session token when updateSession is called", () => {
-        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,testDataPath);
+        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret,
+            setup, config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
         removeSessionFiles();
         bunqApi.updateSession().then((response:string)=>{
             const token:string = response;
@@ -40,7 +41,8 @@ describe("BunqApi", () => {
     });
 
     it("updates an existing session token file by querying session server if needed", () => {
-        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,testDataPath);
+        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,
+            config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
         removeSessionFiles();
         bunqApi.updateSession().then((response:string)=>{
             const token:string = response;
@@ -60,7 +62,8 @@ describe("BunqApi", () => {
     });
 
     it("updates internal sessionToken when updateSession is called", () => {
-        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,testDataPath);
+        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,
+            config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
         removeSessionFiles();
         const beforeUpdateToken:string=bunqApi.getSessionToken();
         //console.log("before:"+beforeUpdateToken);
@@ -90,7 +93,8 @@ describe("BunqApi", () => {
     });
 
     it("can request user", () => {
-        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,testDataPath);
+        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,
+            config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
         bunqApi.requestUser().then((response:string)=>{
             //console.log("ok:"+response);
             let resp:any = JSON.parse(response);
@@ -102,7 +106,8 @@ describe("BunqApi", () => {
     });
 
     it("can request MonetaryAccountBank", () => {
-        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,testDataPath);
+        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,
+            config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
         bunqApi.requestMonetaryAccountBank(deviceServerConfig.userId).then((response:string)=>{
             //console.log("ok:"+response);
             let resp:any = JSON.parse(response);
@@ -114,7 +119,8 @@ describe("BunqApi", () => {
     });
 
     it("can request list of payments", () => {
-        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,testDataPath);
+        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,
+            config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
         bunqApi.requestPayments(deviceServerConfig.userId, deviceServerConfig.accountId).then((response:string)=>{
             //console.log("ok:"+response);
             let resp:any = JSON.parse(response);
@@ -126,7 +132,8 @@ describe("BunqApi", () => {
     });
 
     it("can send payment", () => {
-        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,testDataPath);
+        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,
+            config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
         bunqApi.sendPayment(deviceServerConfig.userId, deviceServerConfig.accountId,
             "1.1", "THISisANiban", "nemoUnknown", "simple payment"
             ).then((response:string)=>{
