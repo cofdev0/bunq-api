@@ -27,10 +27,15 @@ intended functionality
     - https://doc.bunq.com/api/1/page/callbacks
     
 
-prerequisites
-- node.js: https://nodejs.org/en/download/
-- typescript: npm install -g typescript
-- jest: https://facebook.github.io/jest/
+prerequisites (as root or with sudo)
+ 
+- node.js 
+    - apt-get install nodejs
+    - npm install npm@latest -g
+- typescript 
+    - npm install -g typescript
+- jest
+    - npm install -g jest
 
 clone, compile, test
 
@@ -39,4 +44,4 @@ clone, compile, test
 - npm init
 - npm install
 - tsc
-- jest
+- jest --coverage
