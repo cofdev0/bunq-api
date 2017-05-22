@@ -18,7 +18,7 @@ const setup:BunqApiSetup=new BunqApiSetup(new BunqConnection(),key, deviceServer
 
 setup.createDeviceServer(deviceServerConfig.description).then(function(response:string){
     console.log(response);
-    fs.writeFileSync("../keys/bunqDeviceServerResponse"+dateTimeString+".json", response);
+    fs.writeFileSync(config.json.secretsPath+"/bunqDeviceServerResponse"+dateTimeString+".json", response);
     let resp : any = JSON.parse(response);
     console.log("created device server id: "+resp.Response[0].Id.id);
 }).catch(function(error:string){
