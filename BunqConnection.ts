@@ -97,6 +97,7 @@ export class BunqConnection {
     }
 
     request(options:any) : Promise<any> {
+        //todo: verify response with bunq public key
         /* istanbul ignore next */
         return rp(options);
     }
