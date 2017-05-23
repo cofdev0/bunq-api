@@ -6,11 +6,12 @@ var fs = require('fs');
 // openssl genrsa -out server.key 2048 && openssl req -new -key server.key -out server.csr && openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
 
 const config:BunqApiConfig=new BunqApiConfig();
+const secretConfig:BunqApiConfig=new BunqApiConfig(config.json.secretsFile);
 
 // Setup https server options
 var https_options = {
-    key: fs.readFileSync(config.json.secretsPath+'/server.key'),
-    certificate: fs.readFileSync(config.json.secretsPath+'/server.crt')
+    key: fs.readFileSync(secretConfig.json.notificationKeyFile),
+    certificate: fs.readFileSync(secretConfig.json.notificationCertFile)
 };
 
 // Instantiate our two servers
