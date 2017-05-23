@@ -138,6 +138,7 @@ export class BunqApi {
         options.uri = BUNQ_API_SERVICE_URL + "/" + BUNQ_API_VERSION + endPoint;
         if (body && method != "GET") {
             options.body = body;
+            options.json = true;
         }
         options.method = method;
         options.headers['X-Bunq-Client-Authentication'] = this.sessionToken;
