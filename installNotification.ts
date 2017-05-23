@@ -27,10 +27,7 @@ if(process.argv.length<3){
 
 bunqApi.installNotificationFilter(secretConfig.userId, secretConfig.accountId,process.argv[2]).then((response:string)=>{
     console.log(response);
-    fs.writeFileSync(config.json.secretsPath+"/bunqNotificationResponse_"+dateTimeString+".json", response);
-    let resp:any = JSON.parse(response);
-    console.log("current filters: "+JSON.stringify(resp.Response[0].MonetaryAccountBank.notification_filters));
+    fs.writeFileSync(config.json.secretsPath+"/bunqInstallNotificationResponse_"+dateTimeString+".json", response);
 }).catch(function(error:string){
-    console.log(error);
-    expect(true).toBeFalsy();
+    console.log("error:"+error);
 });

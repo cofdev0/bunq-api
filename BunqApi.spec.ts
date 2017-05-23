@@ -195,7 +195,7 @@ describe("BunqApi", () => {
                 "https://my.company.com/callback-url").then((response:string)=>{
             //console.log("ok:"+response);
             let resp:any = JSON.parse(response);
-            expect(resp.Response[0].MonetaryAccountBank.notification_filters[0].notification_target).toBe("https://my.company.com/callback-url");
+            expect(resp.Response[0].Id.id).toBe(444);
         }).catch(function(error:string){
             console.log(error);
             expect(true).toBeFalsy();
