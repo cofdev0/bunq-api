@@ -25,6 +25,8 @@ if(process.argv.length<3){
     process.exit(-1);
 }
 
+console.log("callback url:"+secretConfig.accountId,process.argv[2]);
+
 bunqApi.installNotificationFilter(secretConfig.userId, secretConfig.accountId,process.argv[2]).then((response:string)=>{
     console.log(response);
     fs.writeFileSync(config.json.secretsPath+"/bunqInstallNotificationResponse_"+dateTimeString+".json", response);
