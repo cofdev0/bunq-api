@@ -5,24 +5,31 @@ import {BunqConnection} from "./BunqConnection";
 import {BunqKey} from "./BunqKey";
 import {BunqApi} from "./BunqApi";
 import fs = require('fs');
+const dateTime = require('node-datetime');
+var dt = dateTime.create();
+var dateTimeString = dt.format('YmdHMS');
 
 const config:BunqApiConfig = new BunqApiConfig();
-const deviceServerConfig = BunqApiConfig.readJson(config.json.secretsFile);
+const secretConfig = BunqApiConfig.readJson(config.json.secretsFile);
 const privateKeyPem:string=BunqApiConfig.read(config.json.privateKeyFile);
 const key : BunqKey = new BunqKey(privateKeyPem);
 const installationTokenConfig = BunqApiConfig.readJson(config.json.installationTokenFile);
 const installationToken:string=installationTokenConfig.Response[1].Token.token;
 const connect:BunqConnection = new BunqConnection();
-const setup:BunqApiSetup=new BunqApiSetup(connect,key,deviceServerConfig.secret,installationToken);
-const bunqApi:BunqApi=new BunqApi(connect, key,deviceServerConfig.secret,setup,
+const setup:BunqApiSetup=new BunqApiSetup(connect,key,secretConfig.secret,installationToken);
+const bunqApi:BunqApi=new BunqApi(connect, key,secretConfig.secret,setup,
     config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
 
+if(process.argv.length<3){
+    console.log("no notification url specified!");
+    process.exit(-1);
+}
 
-bunqApi.requestMonetaryAccountBank(deviceServerConfig.userId, deviceServerConfig.accountId).then((response:string)=>{
+bunqApi.installNotificationFilter(secretConfig.userId, secretConfig.accountId,process.argv[2]).then((response:string)=>{
     console.log(response);
-    fs.writeFileSync(config.json.secretsPath+"/requestMABResponse.json", response);
+    fs.writeFileSync(config.json.secretsPath+"/bunqNotificationResponse_"+dateTimeString+".json", response);
     let resp:any = JSON.parse(response);
-    console.log("balance: "+resp.Response[0].MonetaryAccountBank.balance.value);
+    console.log("current filters: "+JSON.stringify(resp.Response[0].MonetaryAccountBank.notification_filters));
 }).catch(function(error:string){
     console.log(error);
     expect(true).toBeFalsy();

@@ -117,6 +117,22 @@ export class BunqApi {
         });
     }
 
+    installNotificationFilter(userId:string, accountId:string, url:string) {
+        return this.updateSession().then(()=>{
+            let options:any = this.createOptions("PUT", "/user/"+userId+"/monetary-account-bank/"+accountId,
+                { "notification_filters":[
+                    {
+                        "notification_delivery_method" : "URL",
+                        "notification_target": url,
+                        "category": "PAYMENT"
+                    }
+                ]
+                });
+            return this.connection.request(options);
+        });
+
+    }
+
     private createOptions(method:string, endPoint:string, body?:any) : any {
         let options = this.createDefaultOptions();
         options.uri = BUNQ_API_SERVICE_URL + "/" + BUNQ_API_VERSION + endPoint;

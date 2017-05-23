@@ -188,6 +188,22 @@ describe("BunqApi", () => {
         });
     });
 
+    it("can install notification filter", () => {
+        const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,
+            config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
+        bunqApi.installNotificationFilter(deviceServerConfig.userId, deviceServerConfig.accountId,
+                "https://my.company.com/callback-url").then((response:string)=>{
+            //console.log("ok:"+response);
+            let resp:any = JSON.parse(response);
+            expect(resp.Response[0].MonetaryAccountBank.notification_filters[0].notification_target).toBe("https://my.company.com/callback-url");
+        }).catch(function(error:string){
+            console.log(error);
+            expect(true).toBeFalsy();
+        });
+    });
+
+
+
     function removeSessionFiles():void {
         if(fs.existsSync(sessionFilename)) {
             fs.unlinkSync(sessionFilename);

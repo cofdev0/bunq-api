@@ -22,6 +22,8 @@ export class BunqConnectionMock {
             else if((options.uri.indexOf("payment")!==-1)
                 &&(options.method=="POST")) return this.sendPayment(options);
             else if(options.uri.indexOf("payment")!==-1) return this.requestPayments(options);
+            else if((options.method=="PUT")&&(options.uri.indexOf("monetary-account-bank")!==-1))
+                return this.installNotificationFilter(options);
             else if(options.uri.indexOf("monetary-account-bank")!==-1) return this.requestMoneytaryAccountBank(options);
             else if(options.uri.indexOf("user")!==-1) return this.requestUser(options);
             else
@@ -66,7 +68,12 @@ export class BunqConnectionMock {
     sendPayment(options:any) : Promise<any> {
         const response:string=BunqApiConfig.readJson(config.json.secretsPath+"/sendPaymentResponse.json");
         return Promise.resolve(JSON.stringify(response));
-     }
+    }
+
+    installNotificationFilter(options:any) : Promise<any> {
+        const response:string=BunqApiConfig.readJson(config.json.secretsPath+"/installFilterResponse.json");
+        return Promise.resolve(JSON.stringify(response));
+    }
 
     private verifyRequestSignature(options:any):boolean {
         const privateKeyPem:string=BunqApiConfig.read(config.json.secretsPath+"/privateKey.pem");

@@ -23,7 +23,7 @@ intended functionality
     - https://doc.bunq.com/api/1/call/payment
 
 
-- install callback to an URL
+- install a notification filter
     - https://doc.bunq.com/api/1/page/callbacks
     
 
