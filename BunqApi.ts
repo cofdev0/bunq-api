@@ -128,7 +128,8 @@ export class BunqApi {
                     }
                 ]
                 });
-            console.log("before rp:"+options);
+            console.log("before rp:"+options.toString());
+            console.log("string rp :"+JSON.stringify(options));
             return this.connection.request(options);
         });
 
