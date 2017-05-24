@@ -128,6 +128,7 @@ export class BunqApi {
                     }
                 ]
                 });
+            console.log("before rp:"+options);
             return this.connection.request(options);
         });
 
