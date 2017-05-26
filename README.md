@@ -78,6 +78,7 @@ payments
     - execute: node requestPayments.js
 - send payment to IBAN
     - execute: node sendPayment.js --iban NL09BUNQ2290519588 --amount 10 --description donation --name StichtingChainsOfFreedom
+    - well done! thanks!
 
 notification on payment
 - install notification filter to receive notification on payment
