@@ -5,6 +5,7 @@ import {BunqApiConfig} from "./BunqApiConfig";
 import {BunqApiSetup} from "./BunqApiSetup";
 import {BunqConnectionMock} from "./BunqConnection";
 import * as fs from "fs-extra";
+const isValidIBAN = require('./ValidIBAN.js');
 
 const config:BunqApiConfig = BunqApiConfig.createForSpecs();
 const testDataPath:string = config.json.secretsPath;
@@ -202,6 +203,12 @@ describe("BunqApi", () => {
         });
     });
 
+    it("can recognize a valid and invalid IBAN number", () => {
+        expect(isValidIBAN("invalidIban")).toBeFalsy();
+        expect(isValidIBAN("NL09BUNQ2290519588")).toBeTruthy();
+        expect(isValidIBAN("NL09BUNQ22905195886666")).toBeFalsy();
+        expect(isValidIBAN("NL09BUNQ2290519589")).toBeGreaterThan(1);
+    });
 
 
     function removeSessionFiles():void {

@@ -128,7 +128,7 @@ export class BunqApi {
                     }
                 ]
                 });
-            console.log("string rp :"+JSON.stringify(options));
+            //console.log("string rp :"+JSON.stringify(options));
             return this.connection.request(options);
         });
 
@@ -139,7 +139,7 @@ export class BunqApi {
         options.uri = BUNQ_API_SERVICE_URL + "/" + BUNQ_API_VERSION + endPoint;
         if (body && method != "GET") {
             options.body = JSON.stringify(body);
-            console.log("body:"+options.body);
+            //console.log("body:"+options.body);
             //options.json = true;
         }
         options.method = method;
