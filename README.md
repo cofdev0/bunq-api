@@ -94,4 +94,4 @@ create server certificate for notification filters
     - openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
 - certificate from letsencrypt.org using certbot.eff.org
     - certbot certonly --standalone -d your-domain-name.com
-    - renew with crontab: 11 0,12 * * * root /usr/bin/certbot certonly --quiet --standalone --renew-by-default -d your-domain-name.com
+    - renew with crontab: 11 0,12 * * * /usr/bin/certbot certonly --quiet --standalone --renew-by-default -d your-domain-name.com
