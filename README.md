@@ -1,11 +1,11 @@
 # bunq
 
-A wrapper for part of the Bunq API v1 in Type-/JavaScript forked from Simon Schraeders https://github.com/c0dr/bunq
+A wrapper for part of the bunq API v1 in Type-/JavaScript forked from Simon Schraeders https://github.com/c0dr/bunq
 
 
 intended functionality
 
-- authentication procedure with Bunq server consisting of
+- authentication procedure with bunq server consisting of
     - key creation and installation
     - device server registration with API key
     - session server registration to get session auth token
