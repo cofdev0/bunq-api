@@ -1,5 +1,6 @@
 
 
+import {BunqApiConfig} from "./BunqApiConfig";
 const fs = require('file-system');
 import {BunqKey} from "./BunqKey";
 
@@ -7,17 +8,18 @@ const dateTime = require('node-datetime');
 var dt = dateTime.create();
 var dateTimeString = dt.format('YmdHMS');
 
-const keyFilePath = '../keys';
-fs.mkdir(keyFilePath);
+const config:BunqApiConfig = new BunqApiConfig();
+const secretsPath = config.json.secretsPath;
+fs.mkdir(secretsPath);
 
 let bunqKey:BunqKey = BunqKey.createNew();
 let publicPem = bunqKey.toPublicKeyString();
-let publicKeyName : string = keyFilePath + "/publicKey"+dateTimeString+".pem";
+let publicKeyName : string = secretsPath + "/publicKey"+dateTimeString+".pem";
 fs.writeFileSync(publicKeyName, publicPem);
 console.log("created public key "+publicKeyName);
 
 let privatePem = bunqKey.toPrivateKeyString();
-let privateKeyName : string = keyFilePath+"/privateKey"+dateTimeString+".pem";
+let privateKeyName : string = secretsPath+"/privateKey"+dateTimeString+".pem";
 fs.writeFileSync(privateKeyName, privatePem);
 console.log("created private key "+privateKeyName);
 

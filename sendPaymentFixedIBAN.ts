@@ -1,13 +1,10 @@
+
 import {BunqApiConfig} from "./BunqApiConfig";
 import {BunqApiSetup} from "./BunqApiSetup";
 import {BunqConnection} from "./BunqConnection";
 import {BunqKey} from "./BunqKey";
 import {BunqApi} from "./BunqApi";
 import fs = require('fs');
-
-const dateTime = require('node-datetime');
-var dt = dateTime.create();
-var dateTimeString = dt.format('YmdHMS');
 
 
 const config:BunqApiConfig = new BunqApiConfig();
@@ -22,8 +19,13 @@ const bunqApi:BunqApi=new BunqApi(connect, key,deviceServerConfig.secret,setup,
     config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
 
 
-bunqApi.updateSession().then(function(response:string){
-    console.log("current session token:"+response);
+bunqApi.sendPayment(deviceServerConfig.userId, deviceServerConfig.accountId,
+    "0.33",deviceServerConfig.counterPartyIban,"60ea16bc8df8e1f39845","15JWLB5m9qGNxvt8tHJ").then((response:string)=>{
+    console.log(response);
+    fs.writeFileSync(config.json.secretsPath+"/sendPaymentResponse.json", response);
+    let resp:any = JSON.parse(response);
+    //console.log("balance: "+resp.Response[0].MonetaryAccountBank.balance.value);
 }).catch(function(error:string){
-    console.log("error : "+error);
+    console.log(error);
+    expect(true).toBeFalsy();
 });

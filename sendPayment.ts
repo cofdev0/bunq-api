@@ -5,6 +5,8 @@ import {BunqConnection} from "./BunqConnection";
 import {BunqKey} from "./BunqKey";
 import {BunqApi} from "./BunqApi";
 import fs = require('fs');
+var parseArgs = require('minimist');
+const isValidIBAN = require('./ValidIBAN.js');
 
 const config:BunqApiConfig = new BunqApiConfig();
 const deviceServerConfig = BunqApiConfig.readJson(config.json.secretsFile);
@@ -18,11 +20,31 @@ const bunqApi:BunqApi=new BunqApi(connect, key,deviceServerConfig.secret,setup,
     config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
 
 
-bunqApi.requestMonetaryAccountBank(deviceServerConfig.userId, deviceServerConfig.accountId).then((response:string)=>{
+let argv = parseArgs(process.argv.slice(2), {})
+
+if(!argv.iban || !argv.amount || !argv.description || !argv.name) {
+    console.log("arguments incomplete!");
+    console.log("example: node sendPayment --iban NL2INGB123456 --amount 0.11 --description thanks --name MrBean");
+    process.exit(-1);
+}
+
+if(isValidIBAN(argv.iban)!=1) {
+    console.log("wrong IBAN : "+argv.iban);
+    process.exit(-1);
+}
+
+
+// console.log("name:"+argv.name);
+// console.log("iban:"+argv.iban);
+// console.log("amount:"+argv.amount);
+// console.log("description:"+argv.description);
+
+bunqApi.sendPayment(deviceServerConfig.userId, deviceServerConfig.accountId,
+    argv.amount,argv.iban,argv.name,argv.description).then((response:string)=>{
     console.log(response);
-    fs.writeFileSync(config.json.secretsPath+"/requestMABResponse.json", response);
+    fs.writeFileSync(config.json.secretsPath+"/sendPaymentResponse.json", response);
     let resp:any = JSON.parse(response);
-    console.log("balance: "+resp.Response[0].MonetaryAccountBank.balance.value);
+    //console.log("balance: "+resp.Response[0].MonetaryAccountBank.balance.value);
 }).catch(function(error:string){
     console.log(error);
     expect(true).toBeFalsy();

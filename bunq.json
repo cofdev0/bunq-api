@@ -1,6 +1,9 @@
 {
-  "publicKeyFile" : "../keys/cofPublicKey.pem",
-  "privateKeyFile" : "../keys/cofPrivateKey.pem",
-  "installationTokenFile" : "../keys/bunqInstallationToken.json",
-  "deviceServerConfigFile" : "../keys/bunqDeviceServerConfig.json"
+  "secretsPath" : "../bunqSecrets",
+  "secretsFile" : "../bunqSecrets/bunqSecrets.json",
+  "publicKeyFile" : "../bunqSecrets/cofPublicKey.pem",
+  "privateKeyFile" : "../bunqSecrets/cofPrivateKey.pem",
+  "installationTokenFile" : "../bunqSecrets/bunqInstallationToken.json",
+  "bunqSessionFile" : "../bunqSecrets/bunqSession.json",
+  "bunqSessionHistoryPath" : "../bunqSecrets/sessions"
 }

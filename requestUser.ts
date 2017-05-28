@@ -5,11 +5,6 @@ import {BunqKey} from "./BunqKey";
 import {BunqApi} from "./BunqApi";
 import fs = require('fs');
 
-const dateTime = require('node-datetime');
-var dt = dateTime.create();
-var dateTimeString = dt.format('YmdHMS');
-
-
 const config:BunqApiConfig = new BunqApiConfig();
 const deviceServerConfig = BunqApiConfig.readJson(config.json.secretsFile);
 const privateKeyPem:string=BunqApiConfig.read(config.json.privateKeyFile);
@@ -22,8 +17,9 @@ const bunqApi:BunqApi=new BunqApi(connect, key,deviceServerConfig.secret,setup,
     config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
 
 
-bunqApi.updateSession().then(function(response:string){
-    console.log("current session token:"+response);
+bunqApi.requestUser().then((response:string)=>{
+    console.log(response);
+    fs.writeFileSync(config.json.secretsPath+"/requestUserResponse.json", response);
 }).catch(function(error:string){
     console.log("error : "+error);
 });
