@@ -59,7 +59,7 @@ setup and authentication with bunq server
 - create device server with bunq
     - have secretsFile in bunq.json point to your secret configuration JSON file
     - the secret configuration file must contain the secret API key you receive from bunq and a description of your server
-    - like so: { 'secret' : 'AGHGAUGUWGE...', 'description':'my bunq dev server' }
+    - like so: { 'secret' : 'nWmbY4QqXra...', 'description':'my bunq dev server' }
     - execute: node createDeviceServer.js
 - create first session with bunq server
     - have bunqSessionFile in bunq.json point to the JSON file where to store the current session
