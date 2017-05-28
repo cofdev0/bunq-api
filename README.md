@@ -85,6 +85,8 @@ notification on payment
     - create server certificate to allow https connection (below)
     - have notificationKeyFile and notificationCertFile in secret configuration file point to certificate files
     - execute: node installNotification.js https://my.domain.com/callback
+    
+- example server to receive notification on payments    
     - execute on server of notified domain: node runCallbackServer.js
 
 create server certificate for notification filters
