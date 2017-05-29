@@ -40,6 +40,6 @@ setup_server(https_server);
 // });
 
 https_server.listen(44444, function() {
-    console.log('%s listening at %s', https_server.name, https_server.url);
+    console.log('%s listening on port 44444 at %s', https_server.name, https_server.url);
 });
 

@@ -5,8 +5,8 @@ import {BunqConnection} from "./BunqConnection";
 import {BunqKey} from "./BunqKey";
 import {BunqApi} from "./BunqApi";
 import fs = require('fs');
-var parseArgs = require('minimist');
-const isValidIBAN = require('./ValidIBAN.js');
+const parseArgs = require('minimist');
+const IBAN = require('iban');
 
 const config:BunqApiConfig = new BunqApiConfig();
 const deviceServerConfig = BunqApiConfig.readJson(config.json.secretsFile);
@@ -24,23 +24,28 @@ let argv = parseArgs(process.argv.slice(2), {})
 
 if(!argv.iban || !argv.amount || !argv.description || !argv.name) {
     console.log("arguments incomplete!");
-    console.log("example: node sendPayment --iban NL2INGB123456 --amount 0.11 --description thanks --name MrBean");
+    console.log("example: node sendPayment --iban NL2INGB123456 --amount 0.11 --description thanks --name MrBean [--sendPayment]");
     process.exit(-1);
 }
 
-if(isValidIBAN(argv.iban)!=1) {
+if(!IBAN.isValid(argv.iban)) {
     console.log("wrong IBAN : "+argv.iban);
     process.exit(-1);
 }
 
-
-// console.log("name:"+argv.name);
-// console.log("iban:"+argv.iban);
-// console.log("amount:"+argv.amount);
-// console.log("description:"+argv.description);
+if(!argv.sendPayment) {
+    console.log("\nthis is a test run. payment is _not_ initiated!\n");
+    console.log("name: "+argv.name);
+    console.log("iban: "+argv.iban);
+    console.log("amount: "+argv.amount);
+    console.log("description: "+argv.description);
+    console.log("\nyou can initiate payment by adding argument: --sendPayment")
+    process.exit(0);
+}
 
 bunqApi.sendPayment(deviceServerConfig.userId, deviceServerConfig.accountId,
-    argv.amount,argv.iban,argv.name,argv.description).then((response:string)=>{
+    argv.amount,argv.iban,argv.name,argv.description)
+    .then((response:string)=>{
     console.log(response);
     fs.writeFileSync(config.json.secretsPath+"/sendPaymentResponse.json", response);
     let resp:any = JSON.parse(response);

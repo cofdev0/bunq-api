@@ -10,10 +10,11 @@
       "jsx"
     ]
   },
-  "name": "cofdev0-bunq",
+  "name": "bunq-api",
   "version": "1.0.1",
   "description": "A wrapper for part of the Bunq API v1",
-  "main": "bunq.js",
+  "main": "./dist/index.js",
+  "types": "./dist/bunq-api.d.ts",
   "dependencies": {
     "file-system": "^2.2.2",
     "fs-extra": "^3.0.1",
@@ -37,7 +38,18 @@
   "scripts": {
     "prepublish": "npm run tsc",
     "test": "jest --coverage",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "createTypes":"dts-generator --name bunq-api --baseDir ./src  --out dist/bunq-api.d.ts index.ts",
+    "createKey":"node dist/createKey.js",
+    "installKey":"node dist/installKey.js",
+    "createDeviceServer":"node dist/createDeviceServer.js",
+    "createSession":"node dist/createSession.js",
+    "requestUser":"node dist/requestUser.js",
+    "showAccount":"node dist/showAccount.js",
+    "requestPayments":"node dist/requestPayments.js",
+    "sendPayment":"node dist/sendPayment.js",
+    "installNotification":"node dist/installNotification.js",
+    "runCallbackServer":"node dist/runCallbackServer.js"
   },
   "repository": {
     "type": "git",
