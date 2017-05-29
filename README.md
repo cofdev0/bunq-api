@@ -40,7 +40,7 @@ A wrapper for part of the bunq API v1 in Type-/JavaScript forked from Simon Schr
 
 ## clone, compile, test
 ```
-git clone https://github.com/cofdev0/bunq.git bunq
+git clone https://github.com/cofdev0/bunq-api.git bunq
 cd bunq
 npm init
 npm install
@@ -106,10 +106,10 @@ npm run test
 ## use in your own projects
 - ```import {BunqKey,BunqApi,BunqApiConfig,BunqApiSetup,BunqServerConnection,SessionCreator} from 'bunq-api/dist/index';```
 - for some examples check e.g.
-    - [request user](https://github.com/cofdev0/bunq/blob/master/src/requestUser.ts)
-    - [show account](https://github.com/cofdev0/bunq/blob/master/src/showAccount.ts)
-    - [request payments](https://github.com/cofdev0/bunq/blob/master/src/requestPayments.ts)
-    - [send payment](https://github.com/cofdev0/bunq/blob/master/src/requestPayments.ts)
+    - [request user](https://github.com/cofdev0/bunq-api/blob/master/src/requestUser.ts)
+    - [show account](https://github.com/cofdev0/bunq-api/blob/master/src/showAccount.ts)
+    - [request payments](https://github.com/cofdev0/bunq-api/blob/master/src/requestPayments.ts)
+    - [send payment](https://github.com/cofdev0/bunq-api/blob/master/src/requestPayments.ts)
 
 ## publish to npm repository
 - install dts-generator
@@ -118,5 +118,6 @@ npm run test
     - ```npm run createTypes```
 - create package for testing
     - ```npm pack```
+    
     
     
