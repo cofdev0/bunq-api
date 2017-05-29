@@ -36,10 +36,7 @@ A wrapper for part of the bunq API v1 in Type-/JavaScript forked from Simon Schr
     - ```npm install -g typescript```
 - jest
     - ```npm install -g jest```
-- dts-generator (only if you intend to publish a npm package)
-    - ```npm install -g dts-generator```
-    - create types with: 
-    - ```npm run createTypes```
+
 
 ## clone, compile, test
 ```
@@ -107,9 +104,19 @@ npm run test
     - ```11 0,12 * * * /usr/bin/certbot certonly --quiet --standalone --renew-by-default -d your-domain-name.com```
     
 ## use in your own projects
-- ```import * from 'bunq-api';```
+- ```import {BunqKey,BunqApi,BunqApiConfig,BunqApiSetup,BunqServerConnection,SessionCreator} from 'bunq-api/dist/index';```
 - for some examples check e.g.
     - [request user](https://github.com/cofdev0/bunq/blob/master/src/requestUser.ts)
     - [show account](https://github.com/cofdev0/bunq/blob/master/src/showAccount.ts)
     - [request payments](https://github.com/cofdev0/bunq/blob/master/src/requestPayments.ts)
     - [send payment](https://github.com/cofdev0/bunq/blob/master/src/requestPayments.ts)
+
+## publish to npm repository
+- install dts-generator
+    - ```npm install -g dts-generator```
+    - create types with: 
+    - ```npm run createTypes```
+- create package for testing
+    - ```npm pack```
+    
+    
