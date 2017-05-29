@@ -108,7 +108,7 @@ npm run test
     
 ## use in your own projects
 - ```import * from 'bunq-api';```
-- for example use cases check e.g.
+- for some examples check e.g.
     - [request user](https://github.com/cofdev0/bunq/blob/master/src/requestUser.ts)
     - [show account](https://github.com/cofdev0/bunq/blob/master/src/showAccount.ts)
     - [request payments](https://github.com/cofdev0/bunq/blob/master/src/requestPayments.ts)
