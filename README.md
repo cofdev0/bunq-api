@@ -31,7 +31,7 @@ A wrapper for part of the bunq API v1 in Type-/JavaScript forked from Simon Schr
  
 - node.js 
     - ```apt-get install nodejs```
-    - ```npm install npm@latest -g```
+    - ```npm install -g npm@latest```
 - typescript 
     - ```npm install -g typescript```
 - jest
@@ -59,8 +59,8 @@ npm run test
     - change publicKeyFile and privateKeyFile in bunq.json to point to newly created key files
 - install public key with bunq server
     - ```npm run installKey```
-    - rename file name of installationToken JSON file in your secretPath
-    - have installationTokenFile in bunq.json point to the installationToken file in your secretPath
+    - rename newly created JSON file with installationToken in your secretPath
+    - have installationTokenFile in bunq.json point to this installationToken file in your secretPath
 - create device server with bunq
     - have secretsFile in bunq.json point to your secret configuration JSON file
     - the secret configuration file must contain the secret API key you receive from bunq and a description of your server
@@ -72,11 +72,11 @@ npm run test
     - ```npm run createSession```
 - find your user id
     - ```npm run requestUser```
-    - find your user id in the json output and enter it in your secret config file with key userId
+    - find your user id in the JSON output and enter it into your secret config file with key userId
     - add "accountId" : "" in your secret config file
 - find your account id
     - ```npm run showAccount```
-    - find your account id in the json output and update your secret config file with key accountId
+    - find your account id in the JSON output and update your secret config file accordingly
 
 ## payments
 - show all payments on your account
@@ -86,6 +86,7 @@ npm run test
     - well done! thanks!
 
 ## notification on payment
+- not yet working. there seems to be an issue on bunq side.
 - install notification filter to receive notification on payment
     - create server certificate to allow https connection (below)
     - have notificationKeyFile and notificationCertFile in secret configuration file point to certificate files
