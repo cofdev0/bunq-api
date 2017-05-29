@@ -3,7 +3,7 @@
 A wrapper for part of the bunq API v1 in Type-/JavaScript forked from Simon Schraeders https://github.com/c0dr/bunq
 
 
-##intended functionality
+## intended functionality
 
 - authentication procedure with bunq server consisting of
     - key creation and installation
@@ -27,7 +27,7 @@ A wrapper for part of the bunq API v1 in Type-/JavaScript forked from Simon Schr
     - https://doc.bunq.com/api/1/page/callbacks
     
 
-##install prerequisites (as root or with sudo)
+## install prerequisites (as root or with sudo)
  
 - node.js 
     - ```apt-get install nodejs```
@@ -41,7 +41,7 @@ A wrapper for part of the bunq API v1 in Type-/JavaScript forked from Simon Schr
     - create types with: 
     - ```npm run createTypes```
 
-##clone, compile, test
+## clone, compile, test
 ```
 git clone https://github.com/cofdev0/bunq.git bunq
 cd bunq
@@ -51,7 +51,7 @@ tsc
 npm run test
 ```
 
-##setup and initial authentication with bunq server
+## setup and initial authentication with bunq server
 - create a public/private key pair
     - change secretsPath in bunq.json to point to an existing directory for your secret data
     - ```npm run createKey```
@@ -78,14 +78,14 @@ npm run test
     - ```npm run showAccount```
     - find your account id in the json output and update your secret config file with key accountId
 
-##payments
+## payments
 - show all payments on your account
     - ```npm run requestPayments```
 - send payment to IBAN
     - ```npm run sendPayment -- --iban NL09BUNQ2290519588 --amount 10 --description donation --name StichtingChainsOfFreedom --sendPayment```
     - well done! thanks!
 
-##notification on payment
+## notification on payment
 - install notification filter to receive notification on payment
     - create server certificate to allow https connection (below)
     - have notificationKeyFile and notificationCertFile in secret configuration file point to certificate files
@@ -95,7 +95,7 @@ npm run test
     - execute on server of notified domain: 
     - ```npm run runCallbackServer```
 
-##create server certificate for notification filters
+## create server certificate for notification filters
 - selfsigned certificate
     - ```openssl genrsa -out server.key 2048``` 
     - ```openssl req -new -key server.key -out server.csr``` 
@@ -105,7 +105,7 @@ npm run test
     - renew certificate twice per day with a crontab job: 
     - ```11 0,12 * * * /usr/bin/certbot certonly --quiet --standalone --renew-by-default -d your-domain-name.com```
     
-##use in your own projects
+## use in your own projects
 - ```import * from 'bunq-api';```
 - for example use cases check e.g.
     - [request user](https://github.com/cofdev0/bunq/blob/master/src/requestUser.ts)
