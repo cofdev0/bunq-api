@@ -98,6 +98,7 @@ export class BunqConnection {
 
     request(options:any) : Promise<any> {
         //todo: verify response with bunq public key
+        options.resolveWithFullResponse= true;
         /* istanbul ignore next */
         return rp(options);
     }
