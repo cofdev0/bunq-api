@@ -22,8 +22,9 @@ var https_server = restify.createServer(https_options);
 // only once, and it will be re-used on both the HTTP and HTTPs servers
 var setup_server = function(app) {
     function respond(req, res, next) {
-        //res.send('I see you ' + req.params.name);
+
         console.log("callback received: "+req)
+        res.send('Your callback was received!');
     }
 
     // Routes
