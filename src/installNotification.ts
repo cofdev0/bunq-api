@@ -26,7 +26,7 @@ if(process.argv.length<3){
 }
 
 console.log("callback url:"+process.argv[2]);
-const encodedUrl:string = encodeURI(process.argv[2]);
+const encodedUrl:string = encodeURIComponent(process.argv[2]);
 console.log("encoded url:"+encodedUrl);
 
 bunqApi.installNotificationFilter(secretConfig.userId, secretConfig.accountId,encodedUrl).then((response:string)=>{
