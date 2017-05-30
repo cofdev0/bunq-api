@@ -20,11 +20,11 @@
     "file-system": "^2.2.2",
     "fs-extra": "^3.0.1",
     "iban": "0.0.8",
-    "minimal-request-promise": "^1.4.0",
     "moment": "^2.18.1",
     "node-datetime": "^1.0.0",
     "node-rsa": "^0.4.2",
     "randomstring": "^1.1.5",
+    "request-promise": "^4.2.1",
     "restify": "^4.3.0",
     "typescript": "^2.3.2"
   },

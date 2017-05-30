@@ -1,7 +1,7 @@
 
 import {BunqKey} from "./BunqKey";
 import {BunqApiConfig} from "./BunqApiConfig";
-const rp = require('minimal-request-promise');
+const rp = require('request-promise');
 
 const config:BunqApiConfig = BunqApiConfig.createForSpecs();
 
@@ -98,7 +98,8 @@ export class BunqConnection {
 
     request(options:any) : Promise<any> {
         //todo: verify response with bunq public key
-        //options.resolveWithFullResponse= true;
+        /* istanbul ignore next */
+        options.resolveWithFullResponse= true;
         /* istanbul ignore next */
         return rp(options);
     }

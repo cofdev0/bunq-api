@@ -18,10 +18,11 @@ const bunqApi:BunqApi=new BunqApi(connect, key,deviceServerConfig.secret,setup,
     config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
 
 
-bunqApi.requestMonetaryAccountBank(deviceServerConfig.userId, deviceServerConfig.accountId).then((response:string)=>{
-    console.log(response);
-    fs.writeFileSync(config.json.secretsPath+"/requestMABResponse.json", response);
-    let resp:any = JSON.parse(response);
+bunqApi.requestMonetaryAccountBank(deviceServerConfig.userId, deviceServerConfig.accountId).then((response:any)=>{
+    console.log(response.headers);
+    console.log(response.body);
+    fs.writeFileSync(config.json.secretsPath+"/requestMABResponse.json", response.body);
+    let resp:any = JSON.parse(response.body);
     console.log("balance: "+resp.Response[0].MonetaryAccountBank.balance.value);
 }).catch(function(error:string){
     console.log(error);
