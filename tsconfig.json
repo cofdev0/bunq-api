@@ -12,8 +12,8 @@
     "noImplicitAny": false,
     "removeComments": false,
     "declaration": true,
-    "sourceMap": false,
-    "inlineSourceMap": true,
+    "sourceMap": true,
+    "inlineSourceMap": false,
     "inlineSources":true,
     "preserveConstEnums": false
 

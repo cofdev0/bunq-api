@@ -6,8 +6,8 @@ import {BunqKey} from "./BunqKey";
 import {BunqApi} from "./BunqApi";
 import fs = require('fs');
 const dateTime = require('node-datetime');
-var dt = dateTime.create();
-var dateTimeString = dt.format('YmdHMS');
+const dt = dateTime.create();
+const dateTimeString = dt.format('YmdHMS');
 
 const config:BunqApiConfig = new BunqApiConfig();
 const secretConfig = BunqApiConfig.readJson(config.json.secretsFile);
@@ -26,8 +26,10 @@ if(process.argv.length<3){
 }
 
 console.log("callback url:"+process.argv[2]);
+const encodedUrl:string = encodeURI(process.argv[2]);
+console.log("encoded url:"+encodedUrl);
 
-bunqApi.installNotificationFilter(secretConfig.userId, secretConfig.accountId,process.argv[2]).then((response:string)=>{
+bunqApi.installNotificationFilter(secretConfig.userId, secretConfig.accountId,encodedUrl).then((response:string)=>{
     console.log(response);
     fs.writeFileSync(config.json.secretsPath+"/bunqInstallNotificationResponse_"+dateTimeString+".json", response);
 }).catch(function(error:string){
