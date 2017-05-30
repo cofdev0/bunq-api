@@ -26,10 +26,10 @@ if(process.argv.length<3){
 }
 
 console.log("callback url:"+process.argv[2]);
-const encodedUrl:string = encodeURIComponent(process.argv[2]);
-console.log("encoded url:"+encodedUrl);
+//const encodedUrl:string = encodeURIComponent(process.argv[2]);
+//console.log("encoded url:"+encodedUrl);
 
-bunqApi.installNotificationFilter(secretConfig.userId, secretConfig.accountId,encodedUrl).then((response:string)=>{
+bunqApi.installNotificationFilter(secretConfig.userId, secretConfig.accountId,process.argv[2]).then((response:string)=>{
     console.log(response);
     fs.writeFileSync(config.json.secretsPath+"/bunqInstallNotificationResponse_"+dateTimeString+".json", response);
 }).catch(function(error:string){
