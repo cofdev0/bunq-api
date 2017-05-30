@@ -1,7 +1,7 @@
 
 import {BunqKey} from "./BunqKey";
 import {BunqApiConfig} from "./BunqApiConfig";
-const rp = require('request-promise');
+const rp = require('minimal-request-promise');
 
 const config:BunqApiConfig = BunqApiConfig.createForSpecs();
 
