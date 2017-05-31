@@ -20,7 +20,7 @@ const setup:BunqApiSetup=new BunqApiSetup(connect,key,secretConfig.secret,instal
 const bunqApi:BunqApi=new BunqApi(connect, key,secretConfig.secret,setup,
     config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
 
-bunqApi.setPubBunqKeyPem(installationTokenConfig.Response[1].ServerPublicKey.server_public_key);
+bunqApi.setPubBunqKeyPem(installationTokenConfig.Response[2].ServerPublicKey.server_public_key);
 
 if(process.argv.length<3){
     console.log("no notification url specified!");

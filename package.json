@@ -44,6 +44,7 @@
     "installKey": "node dist/installKey.js",
     "createDeviceServer": "node dist/createDeviceServer.js",
     "createSession": "node dist/createSession.js",
+    "updateSession": "node dist/updateSession.js",
     "requestUser": "node dist/requestUser.js",
     "showAccount": "node dist/showAccount.js",
     "requestPayments": "node dist/requestPayments.js",

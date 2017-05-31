@@ -19,9 +19,9 @@ const setup:BunqApiSetup=new BunqApiSetup(connect,key,deviceServerConfig.secret,
 const bunqApi:BunqApi=new BunqApi(connect, key,deviceServerConfig.secret,setup,
     config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
 
-bunqApi.setPubBunqKeyPem(installationTokenConfig.Response[1].ServerPublicKey.server_public_key);
+bunqApi.setPubBunqKeyPem(installationTokenConfig.Response[2].ServerPublicKey.server_public_key);
 
-let argv = parseArgs(process.argv.slice(2), {})
+const argv = parseArgs(process.argv.slice(2), {});
 
 if(!argv.iban || !argv.amount || !argv.description || !argv.name) {
     console.log("arguments incomplete!");
@@ -40,18 +40,17 @@ if(!argv.sendPayment) {
     console.log("iban: "+argv.iban);
     console.log("amount: "+argv.amount);
     console.log("description: "+argv.description);
-    console.log("\nyou can initiate payment by adding argument: --sendPayment")
+    console.log("\nyou can initiate payment by adding argument: --sendPayment");
     process.exit(0);
 }
 
 bunqApi.sendPayment(deviceServerConfig.userId, deviceServerConfig.accountId,
     argv.amount,argv.iban,argv.name,argv.description)
     .then((response:string)=>{
-    console.log(response);
+    //console.log(response);
     fs.writeFileSync(config.json.secretsPath+"/sendPaymentResponse.json", response);
-    let resp:any = JSON.parse(response);
+    // const resp:any = JSON.parse(response);
     //console.log("balance: "+resp.Response[0].MonetaryAccountBank.balance.value);
 }).catch(function(error:string){
-    console.log(error);
-    expect(true).toBeFalsy();
+    console.log("error:"+error);
 });

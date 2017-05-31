@@ -16,7 +16,7 @@ const setup:BunqApiSetup=new BunqApiSetup(connect,key,bunqSecrets.secret,install
 const bunqApi:BunqApi=new BunqApi(connect, key,bunqSecrets.secret,setup,
     config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
 
-bunqApi.setPubBunqKeyPem(installationTokenConfig.Response[1].ServerPublicKey.server_public_key);
+bunqApi.setPubBunqKeyPem(installationTokenConfig.Response[2].ServerPublicKey.server_public_key);
 
 bunqApi.requestPayments(bunqSecrets.userId, bunqSecrets.accountId).then((response:string)=>{
     console.log(response);

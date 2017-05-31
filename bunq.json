@@ -1,8 +1,8 @@
 {
   "secretsPath" : "../bunqSecrets",
   "secretsFile" : "../bunqSecrets/bunqSecrets.json",
-  "publicKeyFile" : "../bunqSecrets/cofPublicKey.pem",
-  "privateKeyFile" : "../bunqSecrets/cofPrivateKey.pem",
+  "publicKeyFile" : "../bunqSecrets/clientPublicKey.pem",
+  "privateKeyFile" : "../bunqSecrets/clientPrivateKey.pem",
   "installationTokenFile" : "../bunqSecrets/bunqInstallationToken.json",
   "bunqSessionFile" : "../bunqSecrets/bunqSession.json",
   "bunqSessionHistoryPath" : "../bunqSecrets/sessions"

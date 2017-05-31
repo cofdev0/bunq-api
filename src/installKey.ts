@@ -17,7 +17,7 @@ setup.installKey().then(function(response:string){
     fs.writeFileSync(config.json.secretsPath+"/bunqInstallationToken"+dateTimeString+".json", response);
     let resp : any = JSON.parse(response);
     console.log("installation token: "+resp.Response[1].Token.token);
-    console.log("Bunq server public key: "+resp.Response[1].server_public_key);
+    console.log("Bunq server public key: "+resp.Response[2].ServerPublicKey.server_public_key);
 
 
 
