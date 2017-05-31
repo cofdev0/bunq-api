@@ -5,26 +5,23 @@ A wrapper for part of the bunq API v1 in Type-/JavaScript forked from Simon Schr
 
 ## intended functionality
 
-- authentication procedure with bunq server consisting of
+- [authentication procedure](https://doc.bunq.com/api/1/page/authentication) with bunq server consisting of
     - key creation and installation
     - device server registration with API key
     - session server registration to get session auth token
-    - https://doc.bunq.com/api/1/page/authentication
+  
     
     
-- information request
+- [information request](https://doc.bunq.com/api/1/call/monetary-account)
     - user
     - balance
     - payments
-    - https://doc.bunq.com/api/1/call/monetary-account
-    
-    
-- payment to IBAN
-    - https://doc.bunq.com/api/1/call/payment
+      
+- [payment to IBAN](https://doc.bunq.com/api/1/call/payment)
 
 
-- install a notification filter
-    - https://doc.bunq.com/api/1/page/callbacks
+- [install a notification filter](https://doc.bunq.com/api/1/page/callbacks)
+    
     
 
 ## install prerequisites (as root or with sudo)
