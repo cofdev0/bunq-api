@@ -16,7 +16,6 @@
   "main": "./dist/index.js",
   "types": "./dist/bunq-api.d.ts",
   "dependencies": {
-    "bunq-api": "^1.0.1",
     "file-system": "^2.2.2",
     "fs-extra": "^3.0.1",
     "iban": "0.0.8",
