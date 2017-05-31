@@ -21,7 +21,6 @@ const setup:BunqApiSetup=new BunqApiSetup(connect,key,deviceServerConfig.secret,
 const bunqApi:BunqApi=new BunqApi(connect, key,deviceServerConfig.secret,setup,
     config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
 
-
 bunqApi.updateSession().then(function(response:string){
     console.log("current session token:"+response);
 }).catch(function(error:string){

@@ -17,6 +17,7 @@ const setup:BunqApiSetup=new BunqApiSetup(connect,key,deviceServerConfig.secret,
 const bunqApi:BunqApi=new BunqApi(connect, key,deviceServerConfig.secret,setup,
     config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
 
+bunqApi.setPubBunqKeyPem(installationTokenConfig.Response[1].ServerPublicKey.server_public_key);
 
 bunqApi.requestMonetaryAccountBank(deviceServerConfig.userId, deviceServerConfig.accountId).then((response:any)=>{
     console.log(response.headers);

@@ -16,6 +16,7 @@ const setup:BunqApiSetup=new BunqApiSetup(connect,key,deviceServerConfig.secret,
 const bunqApi:BunqApi=new BunqApi(connect, key,deviceServerConfig.secret,setup,
     config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
 
+bunqApi.setPubBunqKeyPem(installationTokenConfig.Response[1].ServerPublicKey.server_public_key);
 
 bunqApi.requestUser().then((response:string)=>{
     console.log(response);

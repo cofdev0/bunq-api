@@ -1,0 +1,13 @@
+{ "date": "Tue, 30 May 2017 14:06:20 GMT",
+  "server": "Apache",
+  "access-control-allow-origin": "*",
+  "cache-control": "max-age=31536000",
+  "x-bunq-client-response-id": "7159c5c6-6efd-47c1-bebc-3761d410bf6f",
+  "x-bunq-client-request-id": "ReZFzUn",
+  "x-bunq-server-signature": "",
+  "x-frame-options": "SAMEORIGIN",
+  "etag": "d81865effd9cd178f2be98594ecb4ac1516c3c01f8b393bb2c5d381d44568c1f",
+  "connection": "close",
+  "transfer-encoding": "chunked",
+  "content-type": "application/json",
+  "strict-transport-security": "max-age=31536000;" }

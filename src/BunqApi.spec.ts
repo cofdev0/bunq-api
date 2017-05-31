@@ -24,6 +24,7 @@ const wrongKeySetup : BunqApiSetup = new BunqApiSetup(connect, wrongKey, deviceS
 
 const wrongKeyBunqApi:BunqApi = new BunqApi(connect, wrongKey, deviceServerConfig.secret, wrongKeySetup,
     config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
+const serverKey:BunqKey = BunqKey.createFromPrivateKeyFile("./testData/privateBunqKey.pem");
 
 describe("BunqApi", () => {
 
@@ -31,6 +32,7 @@ describe("BunqApi", () => {
     it("creates a file with session token when updateSession is called", () => {
         const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret,
             setup, config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
+        bunqApi.setPubBunqKeyPem(serverKey.toPublicKeyString());
         removeSessionFiles();
         bunqApi.updateSession().then((response:string)=>{
             const token:string = response;
@@ -114,6 +116,7 @@ describe("BunqApi", () => {
     it("can request user", () => {
         const bunqApi:BunqApi = new BunqApi(connect, key,deviceServerConfig.secret, setup,
             config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
+        bunqApi.setPubBunqKeyPem(serverKey.toPublicKeyString());
         bunqApi.requestUser().then((response:string)=>{
             //console.log("ok:"+response);
             let resp:any = JSON.parse(response);

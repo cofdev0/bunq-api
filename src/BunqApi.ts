@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import {BunqApiConfig} from "./BunqApiConfig";
 import * as fs from "fs-extra";
 const randomstring = require("randomstring");
+const NodeRSA = require('node-rsa');
 
 //const BUNQ_API_SERVICE_URL = 'https://sandbox.public.api.bunq.com';
 const BUNQ_API_SERVICE_URL = 'https://api.bunq.com';
@@ -56,8 +57,8 @@ export class BunqApi {
             fs.writeFileSync(this.sessionFilename, JSON.stringify(respJson));
             fs.ensureDirSync(this.sessionHistoryPath);
             fs.writeFileSync(this.sessionHistoryPath + "/bunqSession_" + now.format("YYYYMMDDHHmmss") + ".json", response);
-            const sessionResponseJson: any = JSON.parse(response);
-            const token: string = sessionResponseJson.Response[1].Token.token;
+            //const sessionResponseJson: any = JSON.parse(response);
+            const token: string = respJson.Response[1].Token.token;
             this.sessionToken=token;
             return Promise.resolve(token);
         }).catch(function (error) {
@@ -72,14 +73,14 @@ export class BunqApi {
     requestUser() : Promise<any> {
         return this.updateSession().then(()=>{
             let options:any = this.createOptions("GET", "/user");
-            return this.connection.request(options);
+            return this.request(options);
         });
     }
 
     requestSomething() : Promise<any> {
         return this.updateSession().then(()=>{
             let options:any = this.createOptions("GET", "/something");
-            return this.connection.request(options);
+            return this.request(options);
         });
     }
 
@@ -87,14 +88,14 @@ export class BunqApi {
         return this.updateSession().then(()=>{
             let accountIdString:string = accountId ? "/"+accountId : "";
             let options:any = this.createOptions("GET", "/user/"+userId+"/monetary-account-bank"+accountIdString);
-            return this.connection.request(options);
+            return this.request(options);
         });
     }
 
     requestPayments(userId:string, accountId:string) : Promise<any> {
         return this.updateSession().then(()=>{
             let options:any = this.createOptions("GET", "/user/"+userId+"/monetary-account/"+accountId+"/payment");
-            return this.connection.request(options);
+            return this.request(options);
         });
     }
 
@@ -113,7 +114,7 @@ export class BunqApi {
                     },
                     "description": description
                 });
-            return this.connection.request(options);
+            return this.request(options);
         });
     }
 
@@ -130,7 +131,7 @@ export class BunqApi {
                 });
             //console.log("string rp :"+JSON.stringify(options));
             //todo: check if slashes are escaped before sending
-            return this.connection.request(options);
+            return this.request(options);
         });
 
     }
@@ -164,6 +165,20 @@ export class BunqApi {
         };
     }
 
+    setPubBunqKeyPem(pem:string) {
+        this.pubBunqKey = new NodeRSA();
+        this.pubBunqKey.importKey(pem,'public');
+    }
+
+    private request(options:any):Promise<any>{
+        if(this.pubBunqKey) return this.verifiedRequest(options);
+        return this.connection.request(options);
+    }
+
+    //todo: verify response with bunq public key
+    private verifiedRequest(options:any):Promise<any>{
+        return this.connection.request(options);
+    }
 
     private sessionCreator:SessionCreator;
     private connection:BunqServerConnection;
@@ -173,6 +188,7 @@ export class BunqApi {
     private sessionFilename:string;
     private sessionHistoryPath:string;
 
+    private pubBunqKey:any;
 
 
 }

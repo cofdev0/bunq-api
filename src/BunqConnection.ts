@@ -3,13 +3,15 @@ import {BunqKey} from "./BunqKey";
 import {BunqApiConfig} from "./BunqApiConfig";
 const rp = require('request-promise');
 
+
 const config:BunqApiConfig = BunqApiConfig.createForSpecs();
 
 export class BunqConnectionMock {
 
-
+    private serverKey : BunqKey;
 
     constructor() {
+        this.serverKey = BunqKey.createFromPrivateKeyFile("./testData/privateBunqKey.pem");
     }
 
     request(options:any) : Promise<any> {
@@ -30,8 +32,6 @@ export class BunqConnectionMock {
 
             return Promise.reject("unknown endPoint");
         }
-
-
     }
 
     requestInstallation(options:any) : Promise<any> {
@@ -40,38 +40,42 @@ export class BunqConnectionMock {
     }
 
     requestDeviceServer(options:any) : Promise<any> {
-        let okResult = {"Response":[{"Id":{"id":601830}}]};
-        return Promise.resolve(JSON.stringify(okResult));
+        let response:any = {"Response":[{"Id":{"id":601830}}]};
+        return this.signAndResolve(response);
     }
 
     requestSessionServer(options:any) : Promise<any> {
         if(!this.verifyInstallationToken((options))) return Promise.reject("installation token wrong");
-        const response:string=BunqApiConfig.readJson(config.json.secretsPath+"/bunqSessionServerOriginal.json");
-        return Promise.resolve(JSON.stringify(response));
+        const response:any=BunqApiConfig.readJson(config.json.secretsPath+"/bunqSessionServerOriginal.json");
+        return this.signAndResolve(response);
     }
 
     requestUser(options:any) : Promise<any> {
-        const response:string=BunqApiConfig.readJson(config.json.secretsPath+"/requestUserResponse.json");
-        return Promise.resolve(JSON.stringify(response));
+        const response:any=BunqApiConfig.readJson(config.json.secretsPath+"/requestUserResponse.json");
+        return this.signAndResolve(response);
     }
 
     requestMoneytaryAccountBank(options:any) : Promise<any> {
-        const response:string=BunqApiConfig.readJson(config.json.secretsPath+"/requestMABResponse.json");
-        return Promise.resolve(JSON.stringify(response));
+        const response:any=BunqApiConfig.readJson(config.json.secretsPath+"/requestMABResponse.json");
+        return this.signAndResolve(response);
     }
 
     requestPayments(options:any) : Promise<any> {
-        const response:string=BunqApiConfig.readJson(config.json.secretsPath+"/requestPaymentsResponse.json");
-        return Promise.resolve(JSON.stringify(response));
+        const response:any=BunqApiConfig.readJson(config.json.secretsPath+"/requestPaymentsResponse.json");
+        return this.signAndResolve(response);
     }
 
     sendPayment(options:any) : Promise<any> {
-        const response:string=BunqApiConfig.readJson(config.json.secretsPath+"/sendPaymentResponse.json");
-        return Promise.resolve(JSON.stringify(response));
+        const response:any=BunqApiConfig.readJson(config.json.secretsPath+"/sendPaymentResponse.json");
+        return this.signAndResolve(response);
     }
 
     installNotificationFilter(options:any) : Promise<any> {
-        const response:string=BunqApiConfig.readJson(config.json.secretsPath+"/installFilterResponse.json");
+        const response:any=BunqApiConfig.readJson(config.json.secretsPath+"/installFilterResponse.json");
+        return this.signAndResolve(response);
+    }
+
+    private signAndResolve(response:any):Promise<any>{
         return Promise.resolve(JSON.stringify(response));
     }
 
@@ -94,14 +98,16 @@ export class BunqConnectionMock {
 
 export class BunqConnection {
     constructor() {
-    }
+   }
 
     request(options:any) : Promise<any> {
-        //todo: verify response with bunq public key
+
         /* istanbul ignore next */
-        options.resolveWithFullResponse= true;
+        //options.resolveWithFullResponse= true;
         /* istanbul ignore next */
         return rp(options);
     }
+
+
 
 }

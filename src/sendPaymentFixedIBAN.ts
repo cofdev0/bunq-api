@@ -18,6 +18,7 @@ const setup:BunqApiSetup=new BunqApiSetup(connect,key,deviceServerConfig.secret,
 const bunqApi:BunqApi=new BunqApi(connect, key,deviceServerConfig.secret,setup,
     config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
 
+bunqApi.setPubBunqKeyPem(installationTokenConfig.Response[1].ServerPublicKey.server_public_key);
 
 bunqApi.sendPayment(deviceServerConfig.userId, deviceServerConfig.accountId,
     "0.33",deviceServerConfig.counterPartyIban,"60ea16bc8df8e1f39845","15JWLB5m9qGNxvt8tHJ").then((response:string)=>{

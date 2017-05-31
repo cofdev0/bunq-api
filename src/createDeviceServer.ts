@@ -5,8 +5,8 @@ import {BunqConnection} from "./BunqConnection";
 import {BunqKey} from "./BunqKey";
 
 const dateTime = require('node-datetime');
-var dt = dateTime.create();
-var dateTimeString = dt.format('YmdHMS');
+const dt = dateTime.create();
+const dateTimeString = dt.format('YmdHMS');
 
 
 const config:BunqApiConfig = new BunqApiConfig();
@@ -14,7 +14,7 @@ const deviceServerConfig = BunqApiConfig.readJson(config.json.secretsFile);
 const key : BunqKey = BunqKey.createFromPrivateKeyFile(config.json.privateKeyFile);
 const installationTokenConfig = BunqApiConfig.readJson(config.json.installationTokenFile);
 const installationToken:string=installationTokenConfig.Response[1].Token.token;
-const setup:BunqApiSetup=new BunqApiSetup(new BunqConnection(),key, deviceServerConfig.secret,installationToken);
+const setup:BunqApiSetup=new BunqApiSetup(new BunqConnection(), key, deviceServerConfig.secret,installationToken);
 
 setup.createDeviceServer(deviceServerConfig.description).then(function(response:string){
     console.log(response);
