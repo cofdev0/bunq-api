@@ -5,8 +5,8 @@ const fs = require('file-system');
 import {BunqKey} from "./BunqKey";
 
 const dateTime = require('node-datetime');
-var dt = dateTime.create();
-var dateTimeString = dt.format('YmdHMS');
+const dt = dateTime.create();
+const dateTimeString = dt.format('YmdHMS');
 
 const config:BunqApiConfig = new BunqApiConfig();
 const secretsPath = config.json.secretsPath;
@@ -23,4 +23,4 @@ let privateKeyName : string = secretsPath+"/privateKey"+dateTimeString+".pem";
 fs.writeFileSync(privateKeyName, privatePem);
 console.log("created private key "+privateKeyName);
 
-console.log("to install your new key with Bunq rename key files and update publicKeyFile and privateKeyFile in bunq.json")
+console.log("to install your new key with Bunq rename key files and update publicKeyFile and privateKeyFile in bunq.json");

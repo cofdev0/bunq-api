@@ -6,7 +6,7 @@ import {BunqApiSetup} from "./BunqApiSetup";
 import {BunqConnectionMock} from "./BunqConnection";
 import * as fs from "fs-extra";
 
-var IBAN = require('iban');
+const IBAN = require('iban');
 
 const config:BunqApiConfig = BunqApiConfig.createForSpecs();
 const testDataPath:string = config.json.secretsPath;
@@ -34,12 +34,12 @@ describe("BunqApi", () => {
             setup, config.json.bunqSessionFile, config.json.bunqSessionHistoryPath);
         bunqApi.setPubBunqKeyPem(serverKey.toPublicKeyString());
         removeSessionFiles();
-        bunqApi.updateSession().then((response:string)=>{
-            const token:string = response;
+        bunqApi.updateSession().then(()=>{
+            //const token:string = response;
             //console.log("new token:"+token);
             expect(fs.exists(sessionFilename));
         }).catch(function(error:string){
-            console.log("error1:"+error)
+            console.log("error1:"+error);
             expect(true).toBeFalsy();
         });
     });
@@ -51,16 +51,16 @@ describe("BunqApi", () => {
         bunqApi.updateSession().then((response:string)=>{
             const token:string = response;
             //console.log("new token:"+token);
-            bunqApi.updateSession().then((response:string) =>{
-                const sameToken:string = response;
+            bunqApi.updateSession().then((response2:string) =>{
+                // const sameToken:string = response2;
                 //console.log("same token:"+sameToken);
-                expect(token).toEqual(sameToken);
+                expect(token).toEqual(response2);
             }).catch(function(error:string){
-                console.log("error2:"+error)
+                console.log("error2:"+error);
                 expect(true).toBeFalsy();
             });
         }).catch(function(error:string){
-            console.log("error1:"+error)
+            console.log("error1:"+error);
             expect(true).toBeFalsy();
         });
     });
@@ -73,11 +73,10 @@ describe("BunqApi", () => {
         const bunqSessionOldJson:any=BunqApiConfig.readJson(testDataPath+"/bunqSessionOld.json");
         fs.writeFileSync(config.json.bunqSessionFile, JSON.stringify(bunqSessionOldJson));
         bunqApi.updateSession().then((response:string)=>{
-            const token:string = response;
-            //console.log("new token:"+token);
-            expect(token).toEqual(expectedToken);
+            //console.log("new token:"+response);
+            expect(response).toEqual(expectedToken);
         }).catch(function(error:string){
-            console.log("error1:"+error)
+            console.log("error1:"+error);
             expect(true).toBeFalsy();
         });
     });
@@ -89,14 +88,14 @@ describe("BunqApi", () => {
         const beforeUpdateToken:string=bunqApi.getSessionToken();
         //console.log("before:"+beforeUpdateToken);
         expect(beforeUpdateToken.length).toEqual(0);
-        bunqApi.updateSession().then((response:string)=>{
+        bunqApi.updateSession().then(()=>{
             //const token:string = response;
             const afterUpdateToken:string=bunqApi.getSessionToken();
             //console.log("after:"+afterUpdateToken);
             expect(afterUpdateToken.length).toBeGreaterThan(0);
             //console.log("new token:"+token);
         }).catch(function(error:string){
-            console.log("error1:"+error)
+            console.log("error1:"+error);
             expect(true).toBeFalsy();
         });
     });

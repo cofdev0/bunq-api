@@ -5,9 +5,6 @@ import {BunqKey} from "./BunqKey";
 import {BunqApi} from "./BunqApi";
 import fs = require('fs');
 
-const dateTime = require('node-datetime');
-var dt = dateTime.create();
-var dateTimeString = dt.format('YmdHMS');
 
 
 const config:BunqApiConfig = new BunqApiConfig();

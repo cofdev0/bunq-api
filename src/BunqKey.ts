@@ -60,14 +60,14 @@ export class BunqKey {
 
     createStringToSign(options:any) : string {
         let stringToSign:string = options.method + " ";
-        let endPoint:string = options.uri;
+        // let endPoint:string = options.uri;
         //if(options.uri.indexOf("bunq.com") != -1)
-        endPoint = (options.uri.split("bunq.com"))[1];
-        stringToSign += endPoint;
+        // endPoint = (options.uri.split("bunq.com"))[1];
+        stringToSign += (options.uri.split("bunq.com"))[1];
         stringToSign += "\n";
 
         // We need to order the headers
-        const orderedHeaders = this.orderKeys(options.headers);
+        const orderedHeaders = BunqKey.orderKeys(options.headers);
         Object.keys(orderedHeaders).forEach(function(key) {
             //if (key.startsWith("X-Bunq-") || key == "Cache-Control" || key == "User-Agent")
                 stringToSign += key + ": " + orderedHeaders[key] + "\n";
@@ -80,15 +80,15 @@ export class BunqKey {
     }
 
     // credit to http://stackoverflow.com/questions/9658690/is-there-a-way-to-sort-order-keys-in-javascript-objects
-    orderKeys(obj:any):any {
+    private static orderKeys(obj:any):any {
 
-        var keys = Object.keys(obj).sort(function keyOrder(k1, k2) {
+        const keys = Object.keys(obj).sort(function keyOrder(k1, k2) {
             if (k1 < k2) return -1;
             else return +1;
 
         });
 
-        var after:any = {};
+        const after:any = {};
         for (let i = 0; i < keys.length; i++) {
             after[keys[i]] = obj[keys[i]];
             delete obj[keys[i]];

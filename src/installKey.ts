@@ -5,8 +5,8 @@ import {BunqConnection} from "./BunqConnection";
 import {BunqKey} from "./BunqKey";
 
 const dateTime = require('node-datetime');
-var dt = dateTime.create();
-var dateTimeString = dt.format('YmdHMS');
+const dt = dateTime.create();
+const dateTimeString = dt.format('YmdHMS');
 
 const config:BunqApiConfig = new BunqApiConfig();
 const key:BunqKey = BunqKey.createFromPrivateKeyFile(config.json.privateKeyFile);
