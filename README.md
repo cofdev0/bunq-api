@@ -80,7 +80,6 @@ npm run test
     - well done! thanks!
 
 ## notification on payment
-- not yet working. there seems to be an issue on bunq side.
 - install notification filter to receive notification on payment
     - create server certificate to allow https connection (below)
     - have notificationKeyFile and notificationCertFile in secret configuration file point to certificate files
