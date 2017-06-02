@@ -22,20 +22,22 @@ const https_server = restify.createServer(https_options);
 // only once, and it will be re-used on both the HTTP and HTTPs servers
 const setup_server = function(server) {
     function getRespond(req, res) {
-        console.log("get callback received: "+JSON.stringify(req));
+        console.log("get callback received: "+req);
         res.send('Your get callback was received!');
     }
 
     function postRespond(req, res) {
-        console.log("post callback received: "+JSON.stringify(req));
+        console.log("post callback received: "+req);
         res.send('Your post callback was received!');
     }
 
     // Routes
-    server.get('/callback', getRespond);
+
 
     server.use(restify.bodyParser());
-    server.post('/callback', getRespond);
+    server.post('/callback', postRespond);
+
+    server.get('/callback', getRespond);
 
 };
 
