@@ -20,15 +20,23 @@ const https_server = restify.createServer(https_options);
 
 // Put any routing, response, etc. logic here. This allows us to define these functions
 // only once, and it will be re-used on both the HTTP and HTTPs servers
-const setup_server = function(app) {
-    function respond(req, res) {
+const setup_server = function(server) {
+    function getRespond(req, res) {
+        console.log("get callback received: "+JSON.stringify(req));
+        res.send('Your get callback was received!');
+    }
 
-        console.log("callback received: "+req);
-        res.send('Your callback was received!');
+    function postRespond(req, res) {
+        console.log("post callback received: "+JSON.stringify(req));
+        res.send('Your post callback was received!');
     }
 
     // Routes
-    app.get('/callback', respond);
+    server.get('/callback', getRespond);
+
+    server.use(restify.bodyParser());
+    server.post('/callback', getRespond);
+
 };
 
 // Now, setup both servers in one step
