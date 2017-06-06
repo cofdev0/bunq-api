@@ -28,7 +28,7 @@ describe("BunqApiSetup", () => {
             let resp : any = JSON.parse(response);
             expect(resp.Response[1].Token.token.indexOf(EXPECTED_INSTALLATION_TOKEN)).toBe(0);
         }).catch(function(error:string){
-            console.log("error:"+error)
+            console.log("error:"+error);
             expect(true).toBe(false);
         });
     });
@@ -39,13 +39,13 @@ describe("BunqApiSetup", () => {
             let resp : any = JSON.parse(response);
             expect(resp.Response[0].Id.id).toBeGreaterThan(0);
         }).catch(function(error:string){
-            console.log("error:"+error)
+            console.log("error:"+error);
             expect(true).toBe(false);
         });
     });
 
     it("can not setup device-server with BunqConnectionMock given wrong key", () => {
-        wrongKeySetup.createDeviceServer(deviceServerConfig.description).then(function(response:string){
+        wrongKeySetup.createDeviceServer(deviceServerConfig.description).then(function(){
             console.log("wrong key results in acceptance. this is wrong!");
             expect(true).toBe(false);
         }).catch(function(error:string){
@@ -59,7 +59,7 @@ describe("BunqApiSetup", () => {
             let resp : any = JSON.parse(response);
             expect(resp.Response[1].Token.token.length).toBeGreaterThan(0);
         }).catch(function(error:string){
-            console.log("error:"+error)
+            console.log("error:"+error);
             expect(true).toBe(false);
         });
     });

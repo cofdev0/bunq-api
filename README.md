@@ -100,7 +100,8 @@ npm run test
     - ```11 0,12 * * * /usr/bin/certbot certonly --quiet --standalone --renew-by-default -d your-domain-name.com```
     
 ## use in your own projects
-```import {BunqKey,BunqApi,BunqApiConfig,BunqApiSetup,BunqServerConnection,SessionCreator} from 'bunq-api/dist/index';```
+```import { BunqKey, BunqApi, BunqApiConfig, BunqApiSetup, BunqConnection, BunqServerConnection, SessionCreator } from 'bunq-api/dist/index';
+```
 - for some examples check e.g.
     - [request user](https://github.com/cofdev0/bunq-api/blob/master/src/requestUser.ts)
     - [show account](https://github.com/cofdev0/bunq-api/blob/master/src/showAccount.ts)
