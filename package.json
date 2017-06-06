@@ -11,7 +11,7 @@
     ]
   },
   "name": "bunq-api",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A wrapper for part of the Bunq API v1",
   "main": "./dist/index.js",
   "types": "./dist/bunq-api.d.ts",
