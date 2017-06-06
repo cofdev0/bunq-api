@@ -107,7 +107,7 @@ export class BunqConnection {
 
 
         /* istanbul ignore next */
-        console.log("options:"+JSON.stringify(options));
+        //console.log("options:"+JSON.stringify(options));
         //options.resolveWithFullResponse= true;
         /* istanbul ignore next */
         return rp(options);
