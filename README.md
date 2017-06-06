@@ -39,7 +39,6 @@ A wrapper for part of the bunq API v1 in Type-/JavaScript forked from Simon Schr
 ```
 git clone https://github.com/cofdev0/bunq-api.git bunq
 cd bunq
-npm init
 npm install
 tsc
 npm run test
